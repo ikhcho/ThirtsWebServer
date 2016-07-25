@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="thirts">
+	<!-- Main -->
+<!-- 	<select id="slider" resultType="realfarm.spring.gallery.GalleryVo">
+		SELECT url 
+		FROM picture 
+		ORDER BY pnum DESC 
+		limit 6;
+	</select> -->
+	
+	<insert id="saveAccount" parameterType="com.thirts.member.NewaccountVo" >
+		INSERT INTO account(id, password, name)
+		VALUES (#{id}, #{password}, #{name})
+	</insert>
+	
+	<select id="searchAccount" parameterType="String" resultType="com.thirts.member.LoginVo">
+		SELECT id, password
+		FROM account
+		WHERE id=#{id}
+	</select>
+	 
+	<insert id="saveSpeed" parameterType="com.thirts.speed.SpeedVo" >
+		INSERT INTO speed(max_v, average_v, distance , time, macaddress)
+		VALUES (${max_v}, ${average_v}, ${distance}, ${time}, ${macaddress})
+	</insert>
+	
+	<select id="searchSpeed" parameterType="int" resultType="com.thirts.speed.SpeedVo">
+		SELECT speed.max_v , speed.average_v , speed.distance , speed.time, hwstore.id
+		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress WHERE id="admin" 
+        AND num=(SELECT COUNT(*) FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress)
+	</select>
+	
+	<select id="allSpeed" resultType="com.thirts.speed.SpeedVo">
+		SELECT max_v , average_v , distance , time
+		FROM speed
+	</select>
+	
+	<!-- 
+	<delete id="deleteCalendar" parameterType="int">
+		DELETE FROM calendar
+		WHERE snum=#{num}
+	</delete> -->
+   
+</mapper>
