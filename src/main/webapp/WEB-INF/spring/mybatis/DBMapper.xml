@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="searchSpeed" parameterType="int" resultType="com.thirts.speed.SpeedVo">
 		SELECT speed.max_v , speed.average_v , speed.distance , speed.time, hwstore.id
-		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress WHERE id="admin" 
+		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress WHERE id=#{id}
         AND num=(SELECT COUNT(*) FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress)
 	</select>
 	
