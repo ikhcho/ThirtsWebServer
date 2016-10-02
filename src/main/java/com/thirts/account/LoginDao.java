@@ -1,9 +1,11 @@
-package com.thirts.member;
+package com.thirts.account;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+
+import com.thirts.main.MainVo;
 
 @Repository("loginDao")
 public class LoginDao {
@@ -12,7 +14,7 @@ public class LoginDao {
 	@Qualifier("sqlSessionTemplate")
 	private SqlSessionTemplate template;
 	
-	public int SaveAccount(NewaccountVo vo) {
+	public int SaveAccount(LoginVo vo) {
 		return template.insert("thirts.saveAccount",vo);
 	}
 

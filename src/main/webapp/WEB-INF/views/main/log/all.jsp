@@ -1,88 +1,521 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+	pageEncoding="EUC-KR"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.thirts.speed.SpeedVo"%>
+<%@ page import="com.thirts.speed.SpeedService"%>
+<%@ page import="java.util.List"%>
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Thirts</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    
-    <link href="resources/css/bootstrap.min.css" rel="stylesheet">
-    <link href="resources/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
-    <link href="resources/css/font-awesome.css" rel="stylesheet">
+<html lang="en">
 
-	<link href="resources/mobile/jquery.mobile-1.4.5.min.css" rel="stylesheet" />
-	<link href="resources/mobile/jquery-ui.min.css" rel="stylesheet" />
+<%
+	List<SpeedVo> LSV = (List<SpeedVo>)request.getAttribute("lsv");
+	int size = LSV.size();
 	
-	<script src="resources/mobile/jquery-2.1.3.min.js"></script>
-	<script type="text/javascript">
-	$(document).bind("mobileinit", function(){
-		$.mobile.ajaxLinksEnabled = false;
-		$.mobile.ajaxFormsEnabled = false;
-		$.mobile.ajaxEnabled = false;
-	});
-	</script>
-	<script src="resources/mobile/jquery.mobile-1.4.5.min.js"></script>
-	<script src="resources/mobile/jquery-ui.min.js"></script>
+	String[] date = new String[size];
+	String[] yy = new String[size];
+	String[] mm = new String[size];
+	String[] dd = new String[size];
+	String[] hour = new String[size];
+	String[] min = new String[size];
+	String[] sec = new String[size];
 	
-	<!-- ÏúÑÏπò Ï†ïÎ≥¥ Ï∞∏Ï°∞ : http://doit2day.tistory.com/33-->
-	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>
-	<script>
-	window.onload=function get() {
-		if (navigator.geolocation) {
-			navigator.geolocation.watchPosition(showPosition4);
-		} else {
-			var x4 = document.getElementById("geo");
-			x4.innerHTML = "Ïù¥ Î∏åÎùºÏö∞Ï†ÄÎäî ÏúÑÏπòÏ∂îÏ†ÅÏù¥ ÏßÄÏõêÎêòÏßÄ ÏïäÏäµÎãàÎã§.";
+	String[] score = new String[size];
+	String[] falldown = new String[size];
+	int index=0;
+	String[] tmpDate={};
+	
+	SpeedVo sv = new SpeedVo();
+	for(int v=0; v <size; v++)
+	{
+		sv = LSV.get(v);
+		
+		if(sv.getDate() != null)
+		{
+			date[index] = sv.getDate();
+			tmpDate = date[index].split(" ");
+			yy[index] = tmpDate[0];
+			mm[index] = tmpDate[1];
+			dd[index] = tmpDate[2];
+			hour[index] = tmpDate[3];
+			min[index] = tmpDate[4];
+			sec[index] = tmpDate[5];
+			System.out.println(yy[index]);
+			System.out.println(mm[index]);
+			score[index] =sv.getScore();
+			falldown[index++] =sv.getFalldown();
 		}
 	}
-	
-	function showPosition4(position) {
-		var forAddress = document.getElementById("geo");
-		var geocoder = new google.maps.Geocoder();
-		var latlng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-		
-		geocoder.geocode({'latLng' : latlng}, function(results, status){
-			if (status == google.maps.GeocoderStatus.OK) {
-				if (results[1]) {
-					forAddress.innerHTML = results[3].formatted_address;
-				}
-			} else {
-				alert("Geocoder failed due to: " + status);
-			}
-		});
-	}
-	</script>
-	
-</head>
-<body>
- <div data-role="page" data-theme="a">
-	<div data-role="header">
-		<div data-role="navbar">
-			<a id="geo"></a>
-		</div>
-	</div>
+%>
+<head>
 
-	<ul data-role="listview">
-		<%-- <c:forEach var="LSV" items="ListSpeedVo"> --%>
-			<li>
-				<b></b>
-			</li>
-		<%-- </c:forEach> --%>
-	</ul>
-		
-	<div data-role="footer" data-position="fixed">
-		<div data-role="navbar">					
-			<ul>
-				<li><a href="<%=request.getContextPath()%>/index">Î©îÏù∏ ÌôîÎ©¥</a></li>
-				<li><a href="<%=request.getContextPath()%>/recent">ÏµúÍ∑º Í∏∞Î°ù</a></li>
-				<li><a class="ui-btn-active" href="<%=request.getContextPath()%>/all">Ï†ÑÏ≤¥ Í∏∞Î°ù</a></li>
-				<li><a href="<%=request.getContextPath()%>/community">Î∂ÄÎåÄ ÏãúÏÑ§</a></li>
-			</ul>					
-		</div>		
-	</div>
-</div> 
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>Thirts</title>
+
+<!-- Bootstrap Core CSS -->
+<link
+	href="resources/bootstrap/bower_components/bootstrap/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+
+<!-- MetisMenu CSS -->
+<link
+	href="resources/bootstrap/bower_components/metisMenu/dist/metisMenu.min.css"
+	rel="stylesheet">
+
+<!-- Timeline CSS -->
+<link href="resources/bootstrap/dist/css/timeline.css" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="resources/bootstrap/dist/css/sb-admin-2.css"
+	rel="stylesheet">
+
+<!-- Morris Charts CSS -->
+<link href="resources/bootstrap/bower_components/morrisjs/morris.css"
+	rel="stylesheet">
+
+<!-- Custom Fonts -->
+<link
+	href="resources/bootstrap/bower_components/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+<script type="text/javascript">
+	function profile() {
+		var form = document.f;
+		form.action = "profile";
+		form.submit();
+	}
+	function device() {
+		var form = document.f;
+		form.action = "device";
+		form.submit();
+	}
+	function home() {
+		var form = document.f;
+		form.action = "home";
+		form.submit();
+	}
+	function recent() {
+		var form = document.f;
+		form.action = "recent";
+		form.submit();
+	}
+	function all_list() {
+		var form = document.f;
+		form.action = "all";
+		form.submit();
+	}
+	function rank() {
+		var form = document.f;
+		form.action = "rank";
+		form.submit();
+	}
+	function community() {
+		var form = document.f;
+		form.action = "community";
+		form.submit();
+	}
+</script>
+
+<script src="//www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	
+<script type="text/javascript">
+	google.charts.load('current', {'packages':['corechart']});
+	google.charts.setOnLoadCallback(drawChart);
+	
+	function drawChart() {
+		<% if(session.getAttribute("Sid") != null && sv.getScore() != null){%>
+
+		var scoreArr = new Array();
+		<%for (int j = 0; j < index; j++) {%>
+		scoreArr[<%=j%>] = <%=score[j]%>;
+		<%}%>
+		
+		<%}%>
+		
+
+	var data = new google.visualization.DataTable();
+
+		data.addColumn('number', '»Ωºˆ');
+		data.addColumn('number', '∆Ú¡°');
+		
+		for (var i = 0; i < <%=index%>; i++) {
+			data.addRows([[ i, scoreArr[i]] ]);
+		}
+
+		 var options = {
+		          curveType: 'function',
+		          legend: { position: 'bottom' }
+		        };
+
+		        var chart = new google.visualization.LineChart(document.getElementById('curve_chart1'));
+
+		        chart.draw(data, options);
+		      }
+
+	
+</script>
+<script type="text/javascript">
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+	function drawChart() {
+		<% if(session.getAttribute("Sid") != null && sv.getFalldown() != null){%>
+
+		
+		var falldownArr = new Array();
+		<%for (int k = 0; k < index; k++) {%>
+		falldownArr[<%=k%>] = <%=falldown[k]%>;
+		<%}%>
+		
+		<%}%>
+		
+
+	var data = new google.visualization.DataTable();
+
+		data.addColumn('number', '»Ωºˆ');
+		data.addColumn('number', '≥—æÓ¡¯ »Ωºˆ');
+		
+		for (var i = 0; i < <%=index%>; i++) {
+			data.addRows([[ i,  falldownArr[i] ] ]);
+		}
+		 var options = {
+		          curveType: 'function',
+		          legend: { position: 'bottom' }
+		        };
+
+		        var chart = new google.visualization.LineChart(document.getElementById('curve_chart2'));
+
+		        chart.draw(data, options);
+		      }
+</script>
+<script type="text/javascript">
+	google.charts.load('current', {'packages' : [ 'line' ]});
+	google.charts.setOnLoadCallback(drawChart);
+	
+	function drawChart() {
+		<% if(session.getAttribute("Sid") != null && sv.getDate() != null){%>
+
+		
+		var falldownArr = new Array();
+		<%for (int k = 0; k < index; k++) {%>
+		falldownArr[<%=k%>] = <%=falldown[k]%>;
+		<%}%>
+		
+		<%}%>
+		
+
+	var data = new google.visualization.DataTable();
+
+		data.addColumn('number', '»Ωºˆ');
+		data.addColumn('number', '≥—æÓ¡¯ »Ωºˆ');
+		
+		for (var i = 0; i < <%=index%>; i++) {
+			data.addRows([[ i,  falldownArr[i] ] ]);
+		}
+
+		var chart = new google.visualization.LineChart(document.getElementById('linechart_material3'));
+
+		chart.draw(data);
+
+	}
+</script>
+<!-- ≥Ø¬•∫∞ ±◊∑°«¡
+<script src="//www.google.com/jsapi"></script>
+<script type="text/javascript"
+	src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	google.charts.load('current', {
+		'packages' : [ 'line' ]
+	});
+	google.charts.setOnLoadCallback(drawChart);
+	
+	function drawChart() {
+		<% if(session.getAttribute("Sid") != null && sv.getDate() != null){%>
+		
+		var yyArr = new Array();
+		<%for (int n = 0; n < index; n++) {%>
+		yyArr[<%=n%>] = <%=yy[n]%>;
+		<%}%>
+		
+		var mmArr = new Array();
+		<%for (int n = 0; n < index; n++) {%>
+		mmArr[<%=n%>] = <%=mm[n]%>;
+		<%}%>
+		
+		var ddArr = new Array();
+		<%for (int n = 0; n < index; n++) {%>
+		ddArr[<%=n%>] = <%=dd[n]%>;
+		<%}%>
+		
+		var scoreArr = new Array();
+		<%for (int j = 0; j < index; j++) {%>
+		scoreArr[<%=j%>] = <%=score[j]%>;
+		<%}%>
+		
+		var falldownArr = new Array();
+		<%for (int k = 0; k < index; k++) {%>
+		falldownArr[<%=k%>] = <%=falldown[k]%>;
+		<%}%>
+		
+		<%}%>
+		
+
+	var data = new google.visualization.DataTable();
+
+		data.addColumn('datetime', '≥Ø¬•');
+		data.addColumn('number', '∆Ú¡°');
+		data.addColumn('number', '≥—æÓ¡¯ »Ωºˆ');
+		
+		for (var i = 0; i < <%=index%>; i++) {
+			data.addRows([[ new Date(yyArr[i],mmArr[i],ddArr[i]), scoreArr[i], falldownArr[i] ] ]);
+		}
+
+		var chart = new google.charts.Line(document
+				.getElementById('linechart_material'));
+
+		chart.draw(data);
+
+	}
+</script>
+
+  -->
+</head>
+
+<body>
+<form method="post" class="signin" name="f">
+				<input type="hidden" name="id"
+					value="<%=session.getAttribute("Sid")%>">
+	<div id="wrapper">
+		<!-- Navigation -->
+		<nav class="navbar navbar-default navbar-static-top" role="navigation"
+			style="margin-bottom: 0">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand">T H I R T S - IoT Ω∫≥Î∫∏µÂ</a>
+				
+			</div>
+
+			<!-- /.navbar-header -->
+
+			<ul class="nav navbar-top-links navbar-right">
+
+				<!-- ªÁ∂˜  -->
+				<li class="dropdown" style="margin-right: 30px"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
+						<i class="fa fa-caret-down"></i>
+				</a>
+					<ul class="dropdown-menu dropdown-user" style="margin-right: 5px">
+						<%
+									if (session.getAttribute("Sid") != null) {
+								%> 
+						<li><a onclick="profile()"  style="cursor:pointer"><i class="fa fa-user fa-fw"></i> «¡∑Œ« </a></li>
+						<li><a onclick="device()"  style="cursor:pointer"><i class="fa fa-gear fa-fw"></i> ¿Â∫ÒµÓ∑œ</a></li>
+						<li class="divider"></li>
+						<li><a href="login"><i class="fa fa-user fa-fw"></i> ∑Œ±◊æ∆øÙ<%
+									} else {
+								%> 
+						
+						<li><a href="login"><i class="fa fa-user fa-fw"></i>∑Œ±◊¿Œ<%
+									}
+								%></a></li>
+					</ul> <!-- /.dropdown-user --></li>
+				<!-- /.dropdown -->
+			</ul>
+			<!-- /.navbar-top-links -->
+			
+				<div class="navbar-default sidebar" role="navigation">
+					<div class="sidebar-nav navbar-collapse">
+						<ul class="nav" id="side-menu">
+
+							<li><a class="btn" onclick="home()"><i
+									class="fa fa-dashboard fa-fw"></i> ∏ﬁ¿Œ»≠∏È</a></li>
+
+							<li><a class="btn" onclick="recent()"><i
+									class="fa fa-bar-chart-o fa-fw"></i> √÷±Ÿ±‚∑œ</a></li>
+
+							<li><a class="btn" onclick="all_list()"><i
+									class="fa fa-table fa-fw"></i> ¿¸√º±‚∑œ</a></li>
+							<li><a class="btn" onclick="rank()"><i
+									class="fa fa-trophy fa-fw"></i> ¿¸√º∑©≈∑</a></li>
+							<li><a class="btn" onclick="community()"><i
+									class="fa fa-group fa-fw"></i> ƒøπ¬¥œ∆º</a></li>
+							<li><a class="btn" href="login"><i
+									class="fa fa-user fa-fw"></i>
+									<%
+										if (session.getAttribute("Sid") == null) {
+									%> ∑Œ±◊¿Œ<%
+										} else {
+									%> ∑Œ±◊æ∆øÙ<%
+										}
+									%></a></li>
+						</ul>
+						<img class="nav" src="resources/img/logo.png">
+					</div>
+					<!-- /.sidebar-collapse -->
+				</div>
+			<!-- /.navbar-static-side -->
+		</nav>
+		</div>
+</form>
+		<!--  										end navigation 								-->
+
+		<div id="page-wrapper">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class="page-header">
+						<%
+							if (session.getAttribute("Sname") == null) {
+						%>
+						IoT Ω∫≥Î∫∏µÂ πÊπÆ¿ª »Øøµ«’¥œ¥Ÿ.
+						<%
+							}
+						%>
+						<%
+							if (session.getAttribute("Sname") != null) {
+						%>
+						<%=session.getAttribute("Sname")%>¥‘¿« ¿¸√º±‚∑œ ¿‘¥œ¥Ÿ.
+					</h1>
+					<%
+						}
+					%>
+					<!-- ¿Ã∏ß -->
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+
+			<div class="row">
+                <div class="col-lg-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            	¿¸√º±‚∑œ ≈◊¿Ã∫Ì
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="dataTable_wrapper">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>≥Ø¬•</th>
+                                            <th>√÷∞Ìº”µµ</th>
+                                            <th>∆Ú±’º”µµ</th>
+                                            <th>Ω√∞£</th>
+                                            <th>∞≈∏Æ</th>
+                                            <th>∆Ú¡°</th>
+                                            <th>≥—æÓ¡¯ »Ωºˆ</th>
+                                            <th>¿Âº“</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    
+                                        <c:forEach var="val" items="${lsv}">
+                                        <tr>
+                                        	<td>${val.date}</td>
+                                        	<td>${val.max_v}</td>
+                                        	<td>${val.average_v}</td>
+                                        	<td>${val.time}</td>
+                                        	<td>${val.distance}</td>
+                                        	<td>${val.score}</td>
+                                        	<td>${val.falldown}</td>
+                                        	<td>${val.location}</td>
+                                        </tr>
+                                       </c:forEach> 
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                            
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+				<div class="col-lg-4">
+					<!-- Area Chart Example 	 -->
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<i class="fa fa-bar-chart-o fa-fw"></i> «‚ªÛµµ
+							<div class="pull-right">
+								<div class="btn-group">
+									<button type="button"
+										class="btn btn-default btn-xs dropdown-toggle"
+										data-toggle="dropdown">
+										Actions <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu pull-right" role="menu">
+										<li><a href="#">¿œ</a></li>
+										<li><a href="#">ø˘</a></li>
+										<li><a href="#">≥‚</a></li>
+										<li class="divider"></li>
+										<li><a href="#">?</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div id="curve_chart1" style="height: 250px;"></div>
+					</div>
+					<div class="panel-body">
+						<div id="curve_chart2" style="height: 250px;"></div>
+					</div>
+
+					<!-- /.col-lg-6 -->
+
+				</div>
+
+                <!-- /.col-lg-12 -->
+            </div>
+			
+		</div>
+
+
+
+	<!-- jQuery -->
+	<script
+		src="resources/bootstrap/bower_components/jquery/dist/jquery.min.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script
+		src="resources/bootstrap/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+	<!-- Metis Menu Plugin JavaScript -->
+	<script
+		src="resources/bootstrap/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+ 	
+ 	<!-- DataTables JavaScript -->
+    <script src="resources/bootstrap/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="resources/bootstrap/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+
+
+	<!-- Custom Theme JavaScript -->
+	<script src="resources/bootstrap/dist/js/sb-admin-2.js"></script>
+	<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+	<script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+                responsive: true
+        });
+    });
+    </script>
 </body>
+
 </html>

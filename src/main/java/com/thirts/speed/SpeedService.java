@@ -16,13 +16,13 @@ public class SpeedService {
 	public int SaveSpeed(SpeedVo vo) {
 		return dao.SaveSpeed(vo);
 	}
-	
+
 	public SpeedVo SearchSpeed(String id){
 		return dao.SearchSpeed(id);
 	}
 	
-	public List<SpeedVo> selectAllSpeed() {
-		return dao.selectAllSpeed();
+	public List<SpeedVo> selectAllSpeed(String id) {
+		return dao.selectAllSpeed(id);
 	}
 	
 }

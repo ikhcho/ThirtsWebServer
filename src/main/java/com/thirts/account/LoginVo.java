@@ -1,10 +1,11 @@
-package com.thirts.member;
+package com.thirts.account;
 
-public class NewaccountVo {
+public class LoginVo {
 	private String id;
 	private String password;
 	private String password_check;
 	private String name;
+	private String macaddress;
 	
 	public String getId() {
 		return id;
@@ -30,10 +31,10 @@ public class NewaccountVo {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	@Override
-	public String toString() {
-		return "NewaccountVo [id=" + id + ", password=" + password + ", password_check =" + password_check + ", name = " + name +"]";
+	public String getMacaddress() {
+		return macaddress;
 	}
-	
+	public void setMacaddress(String macaddress) {
+		this.macaddress = macaddress;
+	}
 }

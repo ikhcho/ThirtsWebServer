@@ -1,4 +1,4 @@
-package com.thirts.speed;
+package com.thirts.main;
 
 import java.util.List;
 
@@ -7,26 +7,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import com.thirts.account.LoginVo;
+import com.thirts.speed.SpeedVo;
 
-@Repository("speedDao")
-public class SpeedDao {
+
+@Repository("mainDao")
+public class MainDao {
 	
 	@Autowired
 	@Qualifier("sqlSessionTemplate")
 	private SqlSessionTemplate template;
 
-	public int SaveSpeed(SpeedVo vo) {
-		return template.insert("thirts.saveSpeed",vo);
-	}
-
-	public SpeedVo SearchSpeed(String id) {
+	public List<MainVo> selectAllList(String id) {
 		// TODO Auto-generated method stub
-		return template.selectOne("thirts.searchSpeed",id);
+		return template.selectList("thirts.selectAllList",id);
 	}
 	
-	public List<SpeedVo> selectAllSpeed(String id) {
+	public MainVo SearchCount() {
 		// TODO Auto-generated method stub
-		return template.selectList("thirts.selectAllSpeed",id);
+		return template.selectOne("thirts.SearchCount");
 	}
 
 }

@@ -5,11 +5,11 @@ $(document).ready(function() {
     plot();
 
     function plot() {
-        var sin = [],
-            cos = [];
+        var speed = [],
+        	gyro = [];
         for (var i = 0; i < 12; i += 0.2) {
-            sin.push([i, Math.sin(i + offset)]);
-            cos.push([i, Math.cos(i + offset)]);
+            speed.push([i, 10]);
+            gyro.push([i, 4]);
         }
 
         var options = {
@@ -25,30 +25,26 @@ $(document).ready(function() {
                 hoverable: true //IMPORTANT! this is needed for tooltip to work
             },
             yaxis: {
-                min: -1.2,
-                max: 1.2
+                min: -30,
+                max: 50
             },
             tooltip: true,
             tooltipOpts: {
                 content: "'%s' of %x.1 is %y.4",
-                shifts: {
-                    x: -60,
-                    y: 25
-                }
+
             }
         };
 
         var plotObj = $.plot($("#flot-line-chart"), [{
-                data: sin,
-                label: "sin(x)"
+                data: speed,
+                label: "Speed"
             }, {
-                data: cos,
-                label: "cos(x)"
+                data: gyro,
+                label: "Balance"
             }],
             options);
     }
 });
-
 //Flot Pie Chart
 $(function() {
 

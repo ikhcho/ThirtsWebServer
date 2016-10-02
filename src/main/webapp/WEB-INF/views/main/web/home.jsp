@@ -1,189 +1,340 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+	pageEncoding="EUC-KR"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
 <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
 <title>Thirts</title>
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
 
-<link href="resources/css/bootstrap.min.css" rel="stylesheet">
-<link href="resources/css/bootstrap-responsive.min.css" rel="stylesheet">
-
+<!-- Bootstrap Core CSS -->
 <link
-	href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600"
+	href="resources/bootstrap/bower_components/bootstrap/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<link href="resources/css/font-awesome.css" rel="stylesheet">
-<link href="resources/mobile/jquery.mobile-1.4.5.min.css"
-	rel="stylesheet" />
-<link href="resources/mobile/jquery-ui.min.css" rel="stylesheet" />
 
-<script src="resources/mobile/jquery-2.1.3.min.js"></script>
+<!-- MetisMenu CSS -->
+<link
+	href="resources/bootstrap/bower_components/metisMenu/dist/metisMenu.min.css"
+	rel="stylesheet">
+
+<!-- Timeline CSS -->
+<link href="resources/bootstrap/dist/css/timeline.css" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="resources/bootstrap/dist/css/sb-admin-2.css"
+	rel="stylesheet">
+
+<!-- Morris Charts CSS -->
+<link href="resources/bootstrap/bower_components/morrisjs/morris.css"
+	rel="stylesheet">
+
+<!-- Custom Fonts -->
+<link
+	href="resources/bootstrap/bower_components/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
 <script type="text/javascript">
-	$(document).bind("mobileinit", function() {
-		$.mobile.ajaxLinksEnabled = false;
-		$.mobile.ajaxFormsEnabled = false;
-		$.mobile.ajaxEnabled = false;
-	});
-</script>
-<script src="resources/mobile/jquery.mobile-1.4.5.min.js"></script>
-<script src="resources/mobile/jquery-ui.min.js"></script>
-
-<script type="text/javascript"
-	src="http://maps.googleapis.com/maps/api/js"></script>
-
-
-<!-- ìœ„ì¹˜ ì •ë³´ ì°¸ì¡° : http://doit2day.tistory.com/33-->
-<script>
-	window.onload = function get() {
-		if (navigator.geolocation) {
-			navigator.geolocation.watchPosition(showPosition4);
-		} else {
-			var x4 = document.getElementById("geo");
-			x4.innerHTML = "ì´ ë¸Œë¼ìš°ì €ëŠ” ìœ„ì¹˜ì¶”ì ì´ ì§€ì›ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤.";
-		}
+	function profile() {
+		var form = document.f;
+		form.action = "profile";
+		form.submit();
 	}
-
-	function showPosition4(position) {
-		var forAddress = document.getElementById("geo");
-		var geocoder = new google.maps.Geocoder();
-		var latlng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude); //lat : ìœ„ë„, lng : ê²½ë„
-		//document.getElementById("position").innerHTML = "í˜„ì¬ ìœ„ì¹˜ (ìœ„ë„ : " + position.coords.latitude + ", ê²½ë„ : " + position.coords.longitude + ")"; 
-
-		geocoder.geocode({
-			'latLng' : latlng
-		}, function(results, status) {
-			if (status == google.maps.GeocoderStatus.OK) {
-				if (results[1]) {
-					forAddress.innerHTML = results[3].formatted_address;
-				}
-			} else {
-				alert("Geocoder failed due to: " + status);
-			}
-		});
-
+	function device() {
+		var form = document.f;
+		form.action = "device";
+		form.submit();
 	}
-
+	function home() {
+		var form = document.f;
+		form.action = "home";
+		form.submit();
+	}
+	function recent() {
+		var form = document.f;
+		form.action = "recent";
+		form.submit();
+	}
+	function all_list() {
+		var form = document.f;
+		form.action = "all";
+		form.submit();
+	}
+	function rank() {
+		var form = document.f;
+		form.action = "rank";
+		form.submit();
+	}
+	function community() {
+		var form = document.f;
+		form.action = "community";
+		form.submit();
+	}
 </script>
-
-<!-- ë‚ ì”¨ ì •ë³´ -->
-<script type="text/javascript">
-	$(function() {
-		var url = "http://api.openweathermap.org/data/2.5/weather?q=Seoul&units=metric&APPID=5ef7ab11ac97761d1f0728b1be40395e";
-
-		$.ajax({
-			url : url,
-			dataType : "jsonp",
-			jsonp : "callback",
-			success : function(data) {
-				if (data != null) {
-					switch (data.weather[0].icon) {
-					case '01d':
-					case '02d':
-					case '02n':
-					case '03d':
-					case '04d':
-					case '09d':
-					case '10d':
-						var icon = "resources/img/weather/"
-								+ data.weather[0].icon + ".png ";
-						break;
-					default:
-						var icon = "http://openweathermap.org/img/w/"
-								+ data.weather[0].icon + ".png ";
-						break;
-					}
-
-					var city = null;
-					switch (data.name) {
-					case 'Tenan':
-						city = 'ì²œì•ˆ';
-						break;
-					case 'Seoul':
-						city = 'ì„œìš¸';
-						break;
-					case 'Daejeon':
-						city = 'ëŒ€ì „';
-						break;
-					default:
-						city = data.name;
-						break;
-					}
-
-					var d = new Date();
-					var html = [];
-					html.push('<div>');
-					html.push('<div class="weather">');
-					html.push('<div class="weather-list"><h5>', 'ê¸°ì˜¨ : ',
-							(data.main.temp).toFixed(1) + ' (â„ƒ)<br/>');
-					html.push('í˜„ì¬ë‚ ì”¨ : ', data.weather[0].description, '<br/>');
-					html.push('</h5></div>');
-					$("#weatherView1").append(html.join(''));
-
-					var html2 = [];
-					html2.push('<div>');
-					html2.push('<div class="weather-list"><h5>');
-					html2.push('í˜„ì¬ì‹œê°„ : ', d.toLocaleString(data.dt), '<br/>');
-					html2.push('ë„ì‹œ : ', city, '<br/>');
-					html2.push('</h5></div>');
-					$("#weatherView2").append(html2.join(''));
-				}
-			}
-		});
-	});
-</script>
-
-<style>
-#resolt_image {
-	margin:0 auto;
-	text-align:center;
-	height: 100%;
-	width: 100%;
-}
-</style>
 </head>
+
 <body>
-
-	<div data-role="page" data-theme="a">
-		<div data-role="header">
-			<div data-role="navbar">
-				<a id="geo"></a>
-			</div>
-		</div>
-	<!-- <div id="position"></div>  -->
-
-		<div data-role="content" data-inset="true">
-			<div class="container">
+<form method="post" class="signin" name="f">
+				<input type="hidden" name="id"
+					value="<%=session.getAttribute("Sid")%>">
+	<div id="wrapper">
+		<!-- Navigation -->
+		<nav class="navbar navbar-default navbar-static-top" role="navigation"
+			style="margin-bottom: 0">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand">T H I R T S - IoT ½º³ëº¸µå</a>
 				
-				</br>
-				<div id="cupload" class="breadcrumbs">
-					<ol class="breadcrumb">
-						<ul>
-							<li><div id='weatherView1'></div></li>
-							<li><div id='weatherView2'></div></li>
+			</div>
 
+			<!-- /.navbar-header -->
+
+			<ul class="nav navbar-top-links navbar-right">
+
+				<!-- »ç¶÷  -->
+				<li class="dropdown" style="margin-right: 30px"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
+						<i class="fa fa-caret-down"></i>
+				</a>
+					<ul class="dropdown-menu dropdown-user" style="margin-right: 5px">
+						<%
+									if (session.getAttribute("Sid") != null) {
+								%> 
+						<li><a onclick="profile()"  style="cursor:pointer"><i class="fa fa-user fa-fw"></i> ÇÁ·ÎÇÊ</a></li>
+						<li><a onclick="device()"  style="cursor:pointer"><i class="fa fa-gear fa-fw"></i> Àåºñµî·Ï</a></li>
+						<li class="divider"></li>
+						<li><a href="login"><i class="fa fa-user fa-fw"></i> ·Î±×¾Æ¿ô<%
+									} else {
+								%> 
+						
+						<li><a href="login"><i class="fa fa-user fa-fw"></i>·Î±×ÀÎ<%
+									}
+								%></a></li>
+					</ul> <!-- /.dropdown-user --></li>
+				<!-- /.dropdown -->
+			</ul>
+			<!-- /.navbar-top-links -->
+			
+				<div class="navbar-default sidebar" role="navigation">
+					<div class="sidebar-nav navbar-collapse">
+						<ul class="nav" id="side-menu">
+
+							<li><a class="btn" onclick="home()"><i
+									class="fa fa-dashboard fa-fw"></i> ¸ŞÀÎÈ­¸é</a></li>
+
+							<li><a class="btn" onclick="recent()"><i
+									class="fa fa-bar-chart-o fa-fw"></i> ÃÖ±Ù±â·Ï</a></li>
+
+							<li><a class="btn" onclick="all_list()"><i
+									class="fa fa-table fa-fw"></i> ÀüÃ¼±â·Ï</a></li>
+							<li><a class="btn" onclick="rank()"><i
+									class="fa fa-trophy fa-fw"></i> ÀüÃ¼·©Å·</a></li>
+							<li><a class="btn" onclick="community()"><i
+									class="fa fa-group fa-fw"></i> Ä¿¹Â´ÏÆ¼</a></li>
+							<li><a class="btn" href="login"><i
+									class="fa fa-user fa-fw"></i>
+									<%
+										if (session.getAttribute("Sid") == null) {
+									%> ·Î±×ÀÎ<%
+										} else {
+									%> ·Î±×¾Æ¿ô<%
+										}
+									%></a></li>
 						</ul>
-					</ol>
+						<img class="nav" src="resources/img/logo.png">
+					</div>
+					<!-- /.sidebar-collapse -->
 				</div>
+			<!-- /.navbar-static-side -->
+		</nav>
+		<!--  										end navigation 								-->
+
+		<div id="page-wrapper">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class="page-header">
+						<%
+							if (session.getAttribute("Sname") == null) {
+						%>
+						IoT ½º³ëº¸µå ¹æ¹®À» È¯¿µÇÕ´Ï´Ù.
+						<%
+							}
+						%>
+						<%
+							if (session.getAttribute("Sname") != null) {
+						%>
+						<%=session.getAttribute("Sname")%>´Ô IoT ½º³ëº¸µå ¹æ¹®À» È¯¿µÇÕ´Ï´Ù.
+					</h1>
+					<%
+						}
+					%>
+					<!-- ÀÌ¸§ -->
+				</div>
+				<!-- /.col-lg-12 -->
 			</div>
-			<div id="resolt_image">
-				<img class="col-xs-12 col-sm-12 col-md-12" src="resources/img/ski_main.jpg" >
-			</div>
-		</div>
-		<div data-role="footer" data-position="fixed">
-			<div data-role="navbar">
-				<ul>
-					<li><a class="ui-btn-active"
-						href="<%=request.getContextPath()%>/home">ë©”ì¸ í™”ë©´</a></li>
-					<li><a href="<%=request.getContextPath()%>/recent">ìµœê·¼ ê¸°ë¡</a></li>
-					<li><a href="<%=request.getContextPath()%>/all">ì „ì²´ ê¸°ë¡</a></li>
-					<li><a href="<%=request.getContextPath()%>/community">ë¶€ëŒ€ì‹œì„¤</a></li>
-				</ul>
-			</div>
+			<!-- /.row -->
+
+			<div class="row">
+				<img class="col-lg-9" src="resources/img/login.jpg">
+				<a onclick="recent()" style="cursor:pointer">
+					<div class="col-lg-3">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<div class="row">
+									<div class="col-xs-3">
+										<i class="fa fa-bar-chart-o fa-5x"></i>
+									</div>
+									<div class="col-xs-9 text-right">
+										<h1><c:choose>
+										 <c:when test="${mainvo.getLocation() eq null}">
+											0
+										</c:when>
+										<c:otherwise>
+									        	${mainvo.getLocation()}
+									    </c:otherwise>
+										</c:choose></h1>
+									</div>
+								</div>
+							</div>
+								<div class="panel-footer">
+									<span class="pull-left">ÃÖ±Ù±â·Ï</span> <span class="pull-right"><i
+										class="fa fa-arrow-circle-right"></i></span>
+									<div class="clearfix"></div>
+								</div>
+						</div>
+					</div>
+				</a>
+				<!-- ÀüÃ¼±â·Ï -->
+				<a onclick="all_list()" style="cursor:pointer">
+				<div class="col-lg-3">
+					<div class="panel panel-green">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-3">
+									<i class="fa fa-th-list fa-5x"></i>
+								</div>
+								<div class="col-xs-9 text-right">
+									<h1>${mainvo.getCount()}</h1>
+								</div>
+							</div>
+						</div>
+							<div class="panel-footer">
+							
+								<span class="pull-left">ÀüÃ¼±â·Ï</span><span class="pull-right">
+								<i class="fa fa-arrow-circle-right"></i></span>
+								<div class="clearfix"></div>
+							</div>			
+					</div>
+				</div>
+				</a>
+				<a onclick="rank()" style="cursor:pointer">
+				<div class="col-lg-3">
+					<div class="panel panel-yellow">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-3">
+									<i class="fa fa-trophy fa-5x"></i>
+								</div>
+								<div class="col-xs-9 text-right">
+									<div class="huge"></div>
+								</div>
+							</div>
+						</div>
+							<div class="panel-footer">
+								<span class="pull-left">·©Å·º¸±â</span> <span class="pull-right"><i
+									class="fa fa-arrow-circle-right"></i></span>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+					</div>
+				</a>
+				<a onclick="community()" style="cursor:pointer">
+				<div class="col-lg-3">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-3">
+									<i class="fa fa-users fa-5x"></i>
+								</div>
+								<div class="col-xs-9 text-right">
+									<h1>${mainvo.getMember()}</h1>
+								</div>
+							</div>
+						</div>
+							<div class="panel-footer">
+								<span class="pull-left">Ä¿¹Â´ÏÆ¼</span> <span class="pull-right"><i
+									class="fa fa-arrow-circle-right"></i></span>
+								<div class="clearfix"></div>
+							</div>
+					</div>
+				</div>
+				</a>
+				<%if (session.getAttribute("Smac") == null && session.getAttribute("Sname") != null) {%>
+				<a onclick="device()" style="cursor:pointer">
+				<div class="col-lg-3">
+					<div class="panel panel-red">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-3">
+									<i class="fa fa-gear fa-5x"></i>
+								</div>
+								<div class="col-xs-9 text-right">
+									<h4>µî·ÏµÈ Àåºñ°¡ ¾ø½À´Ï´Ù.</h4>
+								</div>
+							</div>
+						</div>
+							<div class="panel-footer">
+								<span class="pull-left">Àåºñµî·Ï</span> <span class="pull-right"><i
+									class="fa fa-arrow-circle-right"></i></span>
+								<div class="clearfix"></div>
+							</div>
+					</div>
+				</div>
+				</a>
+				<%}%>
+				
 		</div>
 	</div>
+	</form>
+	<!-- jQuery -->
+	<script
+		src="resources/bootstrap/bower_components/jquery/dist/jquery.min.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script
+		src="resources/bootstrap/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+	<!-- Metis Menu Plugin JavaScript -->
+	<script
+		src="resources/bootstrap/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+	<!-- Morris Charts JavaScript -->
+	<script
+		src="resources/bootstrap/bower_components/raphael/raphael-min.js"></script>
+	<script
+		src="resources/bootstrap/bower_components/morrisjs/morris.min.js"></script>
+	<script src="resources/bootstrap/js/morris-data.js"></script>
+
+	<!-- Custom Theme JavaScript -->
+	<script src="resources/bootstrap/dist/js/sb-admin-2.js"></script>
 </body>
+
 </html>

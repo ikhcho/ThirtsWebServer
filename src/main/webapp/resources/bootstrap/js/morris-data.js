@@ -2,9 +2,11 @@ $(function() {
 
     Morris.Area({
         element: 'morris-area-chart',
-        data: [{
+        data: 
+        	/* example data
+        	[{
             period: '2010 Q1',
-            iphone: 2666,
+            iphone: 2222,
             ipad: null,
             itouch: 2647
         }, {
@@ -53,9 +55,46 @@ $(function() {
             ipad: 5713,
             itouch: 1791
         }],
+        */
+        [{
+        	period : '2016-01-02',
+        	max_v : 24,
+        	average_v : 10,
+        	distance : 100
+        },{
+        	period : '2016-01-05',
+        	max_v : 32,
+        	average_v : 9,
+        	distance : 150
+        },{
+        	period : '2016-04-05',
+        	max_v : 10,
+        	average_v : 5,
+        	distance : 60
+        },{
+        	period : '2016-05-07',
+        	max_v : 50,
+        	average_v : 40,
+        	distance : 90
+        },{
+        	period : '2016-08-07',
+        	max_v : 32,
+        	average_v : 40,
+        	distance : 200
+        },{
+        	period : '2016-10-07',
+        	max_v : 50,
+        	average_v : 20,
+        	distance : 125
+        }],
+    
+        
+        // xkey : 날짜, ykeys : 평점(임시 최고속도)
         xkey: 'period',
-        ykeys: ['iphone', 'ipad', 'itouch'],
-        labels: ['iPhone', 'iPad', 'iPod Touch'],
+        ykeys : ['max_v', 'average_v', 'distance'],
+        labels : ['max','average','distance'],
+        //ykeys: ['iphone', 'ipad', 'itouch'],
+        //labels: ['iPhone', 'iPad', 'iPod Touch'],
         pointSize: 2,
         hideHover: 'auto',
         resize: true

@@ -12,31 +12,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		limit 6;
 	</select> -->
 	
-	<insert id="saveAccount" parameterType="com.thirts.member.NewaccountVo" >
+	<insert id="saveAccount" parameterType="com.thirts.account.LoginVo" >
 		INSERT INTO account(id, password, name)
 		VALUES (#{id}, #{password}, #{name})
 	</insert>
 	
-	<select id="searchAccount" parameterType="String" resultType="com.thirts.member.LoginVo">
-		SELECT id, password
-		FROM account
-		WHERE id=#{id}
+	<select id="searchAccount" parameterType="String" resultType="com.thirts.account.LoginVo">
+		SELECT account.id , account.password, account.name , hwstore.macaddress
+		FROM thirts.hwstore right JOIN thirts.account ON hwstore.id = account.id WHERE account.id=#{id}
 	</select>
-	 
+
 	<insert id="saveSpeed" parameterType="com.thirts.speed.SpeedVo" >
-		INSERT INTO speed(max_v, average_v, distance , time, macaddress)
-		VALUES (${max_v}, ${average_v}, ${distance}, ${time}, ${macaddress})
+		INSERT INTO speed(max_v, average_v, distance , time, score, falldown speed, gyro, beacon, location, HW, date)
+		VALUES (${max_v}, ${average_v}, ${distance}, ${time}, #{score}, #{falldown}, #{speed}, #{gyro}, #{beacon}, #{location}, #{macaddress}, #{date})
 	</insert>
+
 	
 	<select id="searchSpeed" parameterType="int" resultType="com.thirts.speed.SpeedVo">
-		SELECT speed.max_v , speed.average_v , speed.distance , speed.time, hwstore.id
-		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress WHERE id=#{id}
-        AND num=(SELECT COUNT(*) FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress)
+		SELECT speed.num, speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.falldown, speed.speed, speed.gyro, speed.beacon, speed.location, hwstore.id, speed.date
+		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress 
+		WHERE id=#{id}
+		order by speed.num desc limit 1
 	</select>
 	
-	<select id="allSpeed" resultType="com.thirts.speed.SpeedVo">
-		SELECT max_v , average_v , distance , time
-		FROM speed
+	<select id="selectAllList" resultType="com.thirts.main.MainVo">
+		SELECT hwstore.id, speed.location
+		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress WHERE id=#{id}
+	</select>
+	
+	<select id="SearchCount" parameterType="String" resultType="com.thirts.main.MainVo">
+		SELECT count(*) as member
+		FROM account
+	</select>
+	
+	<select id="selectAllSpeed" resultType="com.thirts.speed.SpeedVo">
+		SELECT speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.falldown, speed.speed, speed.gyro, speed.beacon, speed.location, speed.date
+		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress 
+		WHERE id=#{id}
 	</select>
 	
 	<!-- 

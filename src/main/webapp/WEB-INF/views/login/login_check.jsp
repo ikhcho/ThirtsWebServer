@@ -1,12 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
+<%@ page import="com.thirts.account.LoginVo" %>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <%
-	session.setAttribute("Sid",	null);
-	session.setAttribute("Sname",	null);
-	session.setAttribute("Smac", null);
+	LoginVo vo = (LoginVo) request.getAttribute("vo");
+	session.setAttribute("Sid",	vo.getId());
+	session.setAttribute("Sname", vo.getName());
+	session.setAttribute("Smac", vo.getMacaddress());
+	
 %>
 <head>
 
@@ -51,16 +54,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-
 <script type="text/javascript">
-	function loginCheck() {
-		var form = document.l;
-		form.action = "<%=request.getContextPath()%>/login_check";
-		form.submit();
-	}
-	function RegisterCheck() {
-		location.replace("<%=request.getContextPath()%>/register");
-	}
 	function profile() {
 		var form = document.f;
 		form.action = "profile";
@@ -118,6 +112,30 @@
 				
 			</div>
 
+			<!-- /.navbar-header -->
+
+			<ul class="nav navbar-top-links navbar-right">
+
+				<!-- 사람  -->
+				<li class="dropdown" style="margin-right: 30px"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
+						<i class="fa fa-caret-down"></i>
+				</a>
+					<ul class="dropdown-menu dropdown-user" style="margin-right: 5px">
+						<li><a onclick="profile()" style="cursor:pointer"><i class="fa fa-user fa-fw"></i> 프로필</a></li>
+						<li><a onclick="device()" style="cursor:pointer"><i class="fa fa-gear fa-fw"></i> 장비등록</a></li>
+						<li class="divider"></li>
+						<li><a href="login"><i class="fa fa-user fa-fw"></i>
+								<%
+									if (session.getAttribute("Sid") == null) {
+								%> 로그인<%
+									} else {
+								%> 로그아웃<%
+									}
+								%></a></li>
+					</ul> <!-- /.dropdown-user --></li>
+				<!-- /.dropdown -->
+			</ul>
 			<!-- /.navbar-top-links -->
 			
 				<div class="navbar-default sidebar" role="navigation">
@@ -152,40 +170,14 @@
 				</div>
 			<!-- /.navbar-static-side -->
 		</nav>
-		</div>
 </form>
 		<!--  										end navigation 								-->
-	<div id="page-wrapper">
-
-        <div class="row">
-
-            <div class="col-md-4 col-md-offset-4">
-                <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Please Sign In</h3>
-                    </div>
-                    <div class="panel-body">
-                        <form method="post" class="signin" name="l">
-                            <fieldset>
-                                <div class="form-group">
-                                    <input id="id" name="id" type="text" class="form-control" placeholder="Id" autocomplete="on" required autofocus>
-									
-                                </div>
-                                <div class="form-group">
-                                    <input id="password" name="password" type="password" class="form-control" placeholder="Password" required>
-                                </div>
-                                
-                                <!-- Change this to a button or input when using this as a form -->
-                                <a class="btn btn-lg btn-success btn-block" onclick="loginCheck()">Login</a>
-								<a class="btn btn-lg btn-primary btn-block" onclick="RegisterCheck()">Register</a>
-                            </fieldset>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+		<div id="page-wrapper">
+			<div class="row">
+				<h1>로그인 되었습니다.</h1>
+			</div>
+		</div>
+	</div>
 
 	<!-- jQuery -->
 	<script
@@ -208,7 +200,6 @@
 
 	<!-- Custom Theme JavaScript -->
 	<script src="resources/bootstrap/dist/js/sb-admin-2.js"></script>
-
 </body>
 
 </html>
