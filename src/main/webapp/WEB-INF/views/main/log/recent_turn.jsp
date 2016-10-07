@@ -1,13 +1,63 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.thirts.speed.SpeedVo"%>
+<%@ page import="com.thirts.speed.SpeedService"%>
 <!DOCTYPE html>
 <html lang="en">
 
 <%
-	session.setAttribute("Sid",	null);
-	session.setAttribute("Sname",	null);
-	session.setAttribute("Smac", null);
+
+	String[] FRF={};
+	String[] FRB={};
+	String[] yaw={};
+	String[] gyro={};
+	
+	int size=60;
+	SpeedVo sv = new SpeedVo();
+			
+	if(request.getAttribute("sv") != null)
+	{
+		sv = (SpeedVo) request.getAttribute("sv");
+		
+		
+		String[] tmp_fsr={};
+		tmp_fsr = sv.getFalldown().split(",");
+		yaw = sv.getSpeed().split(",");
+		gyro = sv.getGyro().split(",");
+		
+		FRF = sv.getFalldown().split(",");
+		FRB = sv.getFalldown().split(",");
+		
+		size = yaw.length;
+		int j=1;
+		
+		FRF[0] = "S";
+		FRB[0] = "S";
+		
+		for(int i=1; i<size; i+=2 )
+		{
+			FRF[j] = tmp_fsr[i];
+			FRB[j] = tmp_fsr[i+1];
+			j++;
+		}
+		
+		for (int i = 1; i < size; i++) {
+			if (gyro[i].equals("H")) {
+				gyro[i] = "-10";
+			}
+			if (gyro[i].equals("E") || gyro[i].equals("B")) {
+				gyro[i] = "-20";
+			}
+			if (gyro[i].equals("L")) {
+				gyro[i] = "-30";
+			}
+		}
+	}
+		
+
 %>
+
 <head>
 
 <meta charset="utf-8">
@@ -53,14 +103,6 @@
 
 
 <script type="text/javascript">
-	function loginCheck() {
-		var form = document.l;
-		form.action = "<%=request.getContextPath()%>/login_check";
-		form.submit();
-	}
-	function RegisterCheck() {
-		location.replace("<%=request.getContextPath()%>/register");
-	}
 	function profile() {
 		var form = document.f;
 		form.action = "profile";
@@ -112,6 +154,61 @@
 		form.submit();
 	}
 </script>
+
+<script src="//www.google.com/jsapi"></script>
+<script type="text/javascript"
+	src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	google.charts.load('current', {
+		'packages' : [ 'line' ]
+	});
+	google.charts.setOnLoadCallback(drawChart);
+
+	function drawChart() {
+	<% if(session.getAttribute("Sid") != null && sv.getGyro() != null){%>
+	
+	var frfArr = new Array();
+	<%for (int k = 1; k < size; k++) {%>
+	frfArr[<%=k%>] = <%=FRF[k]%>;
+	<%}%>
+	
+	var frbArr = new Array();
+	<%for (int k = 1; k < size; k++) {%>
+	frbArr[<%=k%>] = <%=FRB[k]%>;
+	<%}%>
+	
+	var yawArr = new Array();
+	<%for (int k = 1; k < size; k++) {%>
+	yawArr[<%=k%>] = <%=yaw[k]%>;
+	<%}%>
+	
+	var balArr = new Array();
+	<%for (int k = 1; k < size; k++) {%>
+	balArr[<%=k%>] = <%=gyro[k]%>;
+	<%}%>
+
+	<%}%>
+	
+	var data = new google.visualization.DataTable();
+
+		data.addColumn('number', 'Time(s)');
+		data.addColumn('number', 'FRF');
+		data.addColumn('number', 'FRB');
+		data.addColumn('number', 'YAW');
+		data.addColumn('number', 'Balance');
+
+		for (var i = 1; i < <%=size%>; i++) {
+			data.addRows([ [( i*2/10), frfArr[i], frbArr[i], yawArr[i], balArr[i] ] ]);
+		}
+
+		var chart = new google.charts.Line(document
+				.getElementById('linechart_material'));
+
+		chart.draw(data);
+
+	}
+</script>
+
 </head>
 
 <body>
@@ -199,41 +296,89 @@
 				</div>
 			<!-- /.navbar-static-side -->
 		</nav>
-		</div>
-	</form>	
+	</div>
+	</form>
 		<!--  										end navigation 								-->
 
-	<div id="page-wrapper">
+		<div class="row" id="page-wrapper">
+			<div class="row">
 
-        <div class="row">
+				<div class="col-lg-12">
+					<h1 class="page-header">
+						<%
+							if (session.getAttribute("Sname") == null) {
+						%>
+						IoT 스노보드 방문을 환영합니다.
+						<%
+							}
+						%>
+						<%
+							if (session.getAttribute("Sname") != null) {
+						%>
+						<%=session.getAttribute("Sname")%>님의 Turn Mode 최근기록 입니다.
+					</h1>
+					<%
+						}
+					%>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
 
-            <div class="col-md-4 col-md-offset-4">
-                <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Please Sign In</h3>
-                    </div>
-                    <div class="panel-body">
-                        <form method="post" class="signin" name="l">
-                            <fieldset>
-                                <div class="form-group">
-                                    <input id="id" name="id" type="text" class="form-control" placeholder="Id" autocomplete="on" required autofocus>
-									
-                                </div>
-                                <div class="form-group">
-                                    <input id="password" name="password" type="password" class="form-control" placeholder="Password" required>
-                                </div>
-                                
-                                <!-- Change this to a button or input when using this as a form -->
-                                <a class="btn btn-lg btn-success btn-block" onclick="loginCheck()">Login</a>
-								<a class="btn btn-lg btn-primary btn-block" onclick="RegisterCheck()">Register</a>
-                            </fieldset>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+			<div class="col-lg-12">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<i class="fa fa-bar-chart-o fa-fw"></i> ${sv.getLocation()} 	 ${sv.getDate()}
+								<div class="pull-right">
+									<div class="btn-group">
+										<button type="button"
+											class="btn btn-default btn-xs dropdown-toggle"
+											data-toggle="dropdown">
+											Actions <span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu pull-right" role="menu">
+											<li><a href="#">일</a></li>
+											<li><a href="#">월</a></li>
+											<li><a href="#">년</a></li>
+											<li class="divider"></li>
+											<li><a href="#">?</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<img class="col-lg-6" src="resources/img/slope_detail.jpg">
+				</div>
+			</div>
+				<div class="col-lg-12" style="margin-top:20px">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<i class="fa fa-bar-chart-o fa-fw"></i> ${sv.getLocation()} 	 ${sv.getDate()}
+								<div class="pull-right">
+									<div class="btn-group">
+										<button type="button"
+											class="btn btn-default btn-xs dropdown-toggle"
+											data-toggle="dropdown">
+											Actions <span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu pull-right" role="menu">
+											<li><a href="#">일</a></li>
+											<li><a href="#">월</a></li>
+											<li><a href="#">년</a></li>
+											<li class="divider"></li>
+											<li><a href="#">?</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="linechart_material" style="height: 400px;"></div>
+					</div>
 
+			</div>
 
 	<!-- jQuery -->
 	<script
@@ -247,16 +392,30 @@
 	<script
 		src="resources/bootstrap/bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
-	<!-- Morris Charts JavaScript -->
+	<!--
 	<script
 		src="resources/bootstrap/bower_components/raphael/raphael-min.js"></script>
 	<script
 		src="resources/bootstrap/bower_components/morrisjs/morris.min.js"></script>
 	<script src="resources/bootstrap/js/morris-data.js"></script>
+	 Morris Charts JavaScript -->
+
+	<!-- Flot Charts JavaScript -->
+	<script src="resources/bootstrap/bower_components/flot/excanvas.min.js"></script>
+	<script src="resources/bootstrap/bower_components/flot/jquery.flot.js"></script>
+	<script
+		src="resources/bootstrap/bower_components/flot/jquery.flot.pie.js"></script>
+	<script
+		src="resources/bootstrap/bower_components/flot/jquery.flot.resize.js"></script>
+	<script
+		src="resources/bootstrap/bower_components/flot/jquery.flot.time.js"></script>
+	<script
+		src="resources/bootstrap/bower_components/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+	<script src="resources/bootstrap/js/flot-data.js"></script>
+
 
 	<!-- Custom Theme JavaScript -->
 	<script src="resources/bootstrap/dist/js/sb-admin-2.js"></script>
-
 </body>
 
 </html>

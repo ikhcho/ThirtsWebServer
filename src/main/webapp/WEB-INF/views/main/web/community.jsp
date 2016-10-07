@@ -1,13 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 
-<%
-	session.setAttribute("Sid",	null);
-	session.setAttribute("Sname",	null);
-	session.setAttribute("Smac", null);
-%>
 <head>
 
 <meta charset="utf-8">
@@ -51,16 +47,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-
 <script type="text/javascript">
-	function loginCheck() {
-		var form = document.l;
-		form.action = "<%=request.getContextPath()%>/login_check";
-		form.submit();
-	}
-	function RegisterCheck() {
-		location.replace("<%=request.getContextPath()%>/register");
-	}
 	function profile() {
 		var form = document.f;
 		form.action = "profile";
@@ -199,42 +186,37 @@
 				</div>
 			<!-- /.navbar-static-side -->
 		</nav>
-		</div>
-	</form>	
 		<!--  										end navigation 								-->
 
-	<div id="page-wrapper">
-
-        <div class="row">
-
-            <div class="col-md-4 col-md-offset-4">
-                <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Please Sign In</h3>
-                    </div>
-                    <div class="panel-body">
-                        <form method="post" class="signin" name="l">
-                            <fieldset>
-                                <div class="form-group">
-                                    <input id="id" name="id" type="text" class="form-control" placeholder="Id" autocomplete="on" required autofocus>
-									
-                                </div>
-                                <div class="form-group">
-                                    <input id="password" name="password" type="password" class="form-control" placeholder="Password" required>
-                                </div>
-                                
-                                <!-- Change this to a button or input when using this as a form -->
-                                <a class="btn btn-lg btn-success btn-block" onclick="loginCheck()">Login</a>
-								<a class="btn btn-lg btn-primary btn-block" onclick="RegisterCheck()">Register</a>
-                            </fieldset>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
+		<div id="page-wrapper">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class="page-header">
+						<%
+							if (session.getAttribute("Sname") == null) {
+						%>
+						IoT 스노보드 방문을 환영합니다.
+						<%
+							}
+						%>
+						<%
+							if (session.getAttribute("Sname") != null) {
+						%>
+						<%=session.getAttribute("Sname")%>님 IoT 스노보드 방문을 환영합니다.
+					</h1>
+					<%
+						}
+					%>
+					<!-- 이름 -->
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+			<h1>여기는 커뮤니티 페이지입니다.
+			현재 개발중입니다.</h1>
+		</div>
+	</div>
+	</form>
 	<!-- jQuery -->
 	<script
 		src="resources/bootstrap/bower_components/jquery/dist/jquery.min.js"></script>
@@ -256,7 +238,6 @@
 
 	<!-- Custom Theme JavaScript -->
 	<script src="resources/bootstrap/dist/js/sb-admin-2.js"></script>
-
 </body>
 
 </html>

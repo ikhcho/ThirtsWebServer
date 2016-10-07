@@ -91,21 +91,32 @@ public class HomeController {
 	public ModelAndView insertAccount(LoginVo vo) {
 
 		ModelAndView mv = new ModelAndView();
-
-		if (vo.getPassword().equals(vo.getPassword_check())) {
-			lService.SaveAccount(vo);
-			mv.setViewName("login/login");
-			return mv;
-		} else {
-			mv.setViewName("login/registerFail");
-			return mv;
+		if(vo.getId() != "")
+		{
+			if (vo.getPassword().equals(vo.getPassword_check())) {
+				LoginVo checkaccount = lService.SearchAccount(vo.getId());
+				
+				if (checkaccount != null && vo.getId() != "") {
+					mv.setViewName("login/duplication");
+					return mv;
+				}
+				lService.SaveAccount(vo);
+				mv.setViewName("login/login");
+				return mv;
+			} else {
+				mv.setViewName("login/incorrect");
+				return mv;
+			}
 		}
+		mv.setViewName("login/register");
+		return mv;
 	}
 
 	//========================main================================//
 		
 	
 		//=======================android============================//
+		/*
 		@RequestMapping(value = "/main/android/request_recent_log", method = RequestMethod.GET)
 		public ModelAndView android_recent_log(@RequestParam(value = "id" , required=false, defaultValue="1") String id ){
 			
@@ -115,7 +126,7 @@ public class HomeController {
 			mv.setViewName("main/android/request_recent_log");
 			return mv;
 		}
-	
+		*/
 		//=========================================================//
 		
 		//=======================web===============================//
@@ -134,18 +145,57 @@ public class HomeController {
 			
 			List<MainVo> LMV = mService.selectAllList(vo.getId());
 			int size = LMV.size();
-			if(size != 0)
+			
+			if(LMV.toString().equals("[null]") || size == 0)
+			{
+				mv.addObject("mainvo", member);	
+			}
+			else
 			{
 				MainVo mainvo = LMV.get(size-1);
 				mainvo.setCount(size);
 				mainvo.setMember(member.getMember());
 				mv.addObject("mainvo", mainvo);
 			}
-			else
-			{
-				mv.addObject("mainvo", member);
-			}
 			mv.setViewName("main/web/home");
+			return mv;
+			
+		}
+		
+		@RequestMapping(value = "/rank", method = RequestMethod.POST)
+		public ModelAndView rank(LoginVo vo) {
+		
+			ModelAndView mv = new ModelAndView();
+			
+			mv.setViewName("main/web/rank");
+			return mv;
+			
+		}
+		
+		@RequestMapping(value = "/community", method = RequestMethod.POST)
+		public ModelAndView community(LoginVo vo) {
+		
+			ModelAndView mv = new ModelAndView();
+			
+			mv.setViewName("main/web/community");
+			return mv;
+			
+		}
+		@RequestMapping(value = "/profile", method = RequestMethod.POST)
+		public ModelAndView profile(LoginVo vo) {
+		
+			ModelAndView mv = new ModelAndView();
+			
+			mv.setViewName("main/web/profile");
+			return mv;
+			
+		}
+		@RequestMapping(value = "/device", method = RequestMethod.POST)
+		public ModelAndView device(LoginVo vo) {
+		
+			ModelAndView mv = new ModelAndView();
+			
+			mv.setViewName("main/web/device");
 			return mv;
 			
 		}
@@ -154,19 +204,58 @@ public class HomeController {
 		
 		//=======================log================================//
 
-		@RequestMapping(value = "/recent", method = RequestMethod.POST)
-		public ModelAndView recent(LoginVo vo) {
+		@RequestMapping(value = "/recent_free", method = RequestMethod.POST)
+		public ModelAndView recent_f(LoginVo vo) {
 			ModelAndView mv = new ModelAndView();
-			SpeedVo sv = sService.SearchSpeed(vo.getId());
+			SpeedVo sv = sService.SearchSpeed_f(vo.getId());
 			mv.addObject("sv", sv);
-			mv.setViewName("main/log/recent");
+			mv.setViewName("main/log/recent_free");
+			return mv;
+		}
+		
+		@RequestMapping(value = "/recent_pendulum", method = RequestMethod.POST)
+		public ModelAndView recent_p(LoginVo vo) {
+			ModelAndView mv = new ModelAndView();
+			SpeedVo sv = sService.SearchSpeed_p(vo.getId());
+			mv.addObject("sv", sv);
+			mv.setViewName("main/log/recent_pendulum");
+			return mv;
+		}
+		
+		@RequestMapping(value = "/recent_turn", method = RequestMethod.POST)
+		public ModelAndView recent_t(LoginVo vo) {
+			ModelAndView mv = new ModelAndView();
+			SpeedVo sv = sService.SearchSpeed_t(vo.getId());
+			mv.addObject("sv", sv);
+			mv.setViewName("main/log/recent_turn");
+			return mv;
+		}
+		
+		@RequestMapping(value = "/recent_record", method = RequestMethod.POST)
+		public ModelAndView recent_r(LoginVo vo) {
+			ModelAndView mv = new ModelAndView();
+			SpeedVo sv = sService.SearchSpeed_r(vo.getId());
+			mv.addObject("sv", sv);
+			mv.setViewName("main/log/recent_record");
 			return mv;
 		}
 		
 		@RequestMapping(value = "/all", method = RequestMethod.POST)
 		public ModelAndView all(LoginVo vo) {
 			ModelAndView mv = new ModelAndView();
-			List<SpeedVo> LSV = sService.selectAllSpeed(vo.getId());
+			List<SpeedVo> LSV = sService.searchAllSpeed(vo.getId());
+			mv.addObject("lsv", LSV);
+			mv.setViewName("main/log/all");
+			return mv;
+		}
+		
+		@RequestMapping(value = "/all", method = RequestMethod.GET)
+		public ModelAndView all_select(@RequestParam(value = "num") int num) {
+			
+			ModelAndView mv = new ModelAndView();
+			SpeedVo osv = sService.selectOneAllSpeed(num);
+			List<SpeedVo> LSV = sService.selectAllSpeed(osv.getMacaddress());
+			mv.addObject("osv", osv);
 			mv.addObject("lsv", LSV);
 			mv.setViewName("main/log/all");
 			return mv;
@@ -182,28 +271,31 @@ public class HomeController {
 	
 		//========================db=================================//
 		@RequestMapping(value = "/db/receivedata", method = RequestMethod.GET)
-		public String receivedata(@RequestParam(value = "max_v", required = false, defaultValue = "1") int max_v,
-				@RequestParam(value = "average_v", required = false, defaultValue = "2") int average_v,
-				@RequestParam(value = "distance", required = false, defaultValue = "3") int distance,
-				@RequestParam(value = "time", required = false, defaultValue = "4") int time,
-				@RequestParam(value = "falldown", required = false, defaultValue = "5") String falldown,
-				@RequestParam(value = "speed", required = false, defaultValue = "6") String speed,
-				@RequestParam(value = "gyro", required = false, defaultValue = "7") String gyro,
-				@RequestParam(value = "beacon", required = false, defaultValue = "8") String beacon,
-				@RequestParam(value = "location", required = false, defaultValue = "9") String location,
-				@RequestParam(value = "macaddress", required = false, defaultValue = "10") String macaddress){
-			
+		public String receivedata(@RequestParam(value = "mode", required = false, defaultValue = "1") String mode,
+				@RequestParam(value = "max_v", required = false, defaultValue = "2") int max_v,
+				@RequestParam(value = "average_v", required = false, defaultValue = "3") int average_v,
+				@RequestParam(value = "distance", required = false, defaultValue = "4") int distance,
+				@RequestParam(value = "time", required = false, defaultValue = "5") int time,
+				@RequestParam(value = "count", required = false, defaultValue = "6") String count,
+				@RequestParam(value = "falldown", required = false, defaultValue = "7") String falldown,
+				@RequestParam(value = "speed", required = false, defaultValue = "8") String speed,
+				@RequestParam(value = "gyro", required = false, defaultValue = "9") String gyro,
+				@RequestParam(value = "beacon", required = false, defaultValue = "10") String beacon,
+				@RequestParam(value = "location", required = false, defaultValue = "11") String location,
+				@RequestParam(value = "macaddress", required = false, defaultValue = "12") String macaddress){
 			
 			Date d = new Date();
 			String date = d.toString();
 			String score = "4";
 			
 			SpeedVo vo = new SpeedVo();
+			vo.setMode(mode);
 			vo.setMax_v(max_v);
 			vo.setAverage_v(average_v);
 			vo.setDistance(distance);
 			vo.setTime(time);
 			vo.setScore(score);
+			vo.setCount(count);
 			vo.setFalldown(falldown);
 			vo.setSpeed(speed);
 			vo.setGyro(gyro);

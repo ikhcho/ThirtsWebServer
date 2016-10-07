@@ -8,43 +8,109 @@
 <html lang="en">
 
 <%
+	// 도표
 	List<SpeedVo> LSV = (List<SpeedVo>)request.getAttribute("lsv");
 	int size = LSV.size();
 	
 	String[] date = new String[size];
-	String[] yy = new String[size];
-	String[] mm = new String[size];
-	String[] dd = new String[size];
-	String[] hour = new String[size];
-	String[] min = new String[size];
-	String[] sec = new String[size];
 	
 	String[] score = new String[size];
-	String[] falldown = new String[size];
+	String[] count = new String[size];
 	int index=0;
 	String[] tmpDate={};
 	
 	SpeedVo sv = new SpeedVo();
-	for(int v=0; v <size; v++)
+	if(LSV.toString().equals("[null]"))
 	{
-		sv = LSV.get(v);
-		
-		if(sv.getDate() != null)
-		{
-			date[index] = sv.getDate();
-			tmpDate = date[index].split(" ");
-			yy[index] = tmpDate[0];
-			mm[index] = tmpDate[1];
-			dd[index] = tmpDate[2];
-			hour[index] = tmpDate[3];
-			min[index] = tmpDate[4];
-			sec[index] = tmpDate[5];
-			System.out.println(yy[index]);
-			System.out.println(mm[index]);
-			score[index] =sv.getScore();
-			falldown[index++] =sv.getFalldown();
-		}
+		String state = "no data";
 	}
+	else
+	{
+		for(int v=0; v <size; v++)
+		{
+			sv = LSV.get(v);
+			
+			score[index] =sv.getScore();
+			count[index++] =sv.getCount();
+		}	
+	}
+	
+	// 선택한 데이터
+	String[] speed={};
+	String[] gyro={};
+	String[] falldown={};
+	String[] FRF={};
+	String[] FRB={};
+	String[] yaw={};
+	
+	int time=60;
+	SpeedVo select_sv = new SpeedVo();
+	if(request.getParameter("num") != null)
+	{
+		if(request.getAttribute("osv") != null)
+		{
+			select_sv = (SpeedVo) request.getAttribute("osv");
+			if(select_sv.getMode().equals("T"))
+			{
+				String[] tmp_fsr={};
+				tmp_fsr = select_sv.getFalldown().split(",");
+				yaw = select_sv.getSpeed().split(",");
+				gyro = select_sv.getGyro().split(",");
+				
+				FRF = select_sv.getFalldown().split(",");
+				FRB = select_sv.getFalldown().split(",");
+				
+				time = yaw.length;
+				int j=1;
+				FRF[0] = "S";
+				FRB[0] = "S";
+				
+				for(int i=1; i<time; i+=2 )
+				{
+					FRF[j] = tmp_fsr[i];
+					FRB[j] = tmp_fsr[i+1];
+					j++;
+				}
+				
+				for (int i = 1; i < time; i++) {
+					if (gyro[i].equals("H")) {
+						gyro[i] = "-10";
+					}
+					if (gyro[i].equals("E") || gyro[i].equals("B")) {
+						gyro[i] = "-20";
+					}
+					if (gyro[i].equals("L")) {
+						gyro[i] = "-30";
+					}
+				}
+			}
+			else
+			{
+				speed = select_sv.getSpeed().split(",");
+				gyro = select_sv.getGyro().split(",");
+				falldown = select_sv.getFalldown().split(",");
+				time = speed.length;
+				for (int i = 1; i < time; i++) {
+					if (gyro[i].equals("H")) {
+						gyro[i] = "-10";
+					}
+					if (gyro[i].equals("E") || gyro[i].equals("B")) {
+						gyro[i] = "-20";
+					}
+					if (gyro[i].equals("L")) {
+						gyro[i] = "-30";
+					}
+					if (falldown[i].equals("E")) {
+						falldown[i] = "-50";
+					}
+					if (falldown[i].equals("F")) {
+						falldown[i] = "-40";
+					}
+				}
+			}
+		}
+	}	
+	
 %>
 <head>
 
@@ -106,9 +172,24 @@
 		form.action = "home";
 		form.submit();
 	}
-	function recent() {
+	function recent_f() {
 		var form = document.f;
-		form.action = "recent";
+		form.action = "recent_free";
+		form.submit();
+	}
+	function recent_p() {
+		var form = document.f;
+		form.action = "recent_pendulum";
+		form.submit();
+	}
+	function recent_t() {
+		var form = document.f;
+		form.action = "recent_turn";
+		form.submit();
+	}
+	function recent_r() {
+		var form = document.f;
+		form.action = "recent_record";
 		form.submit();
 	}
 	function all_list() {
@@ -167,17 +248,18 @@
 
 	
 </script>
+
 <script type="text/javascript">
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
 	function drawChart() {
-		<% if(session.getAttribute("Sid") != null && sv.getFalldown() != null){%>
+		<% if(session.getAttribute("Sid") != null && sv.getCount() != null){%>
 
 		
 		var falldownArr = new Array();
 		<%for (int k = 0; k < index; k++) {%>
-		falldownArr[<%=k%>] = <%=falldown[k]%>;
+		falldownArr[<%=k%>] = <%=count[k]%>;
 		<%}%>
 		
 		<%}%>
@@ -201,97 +283,99 @@ google.charts.setOnLoadCallback(drawChart);
 		        chart.draw(data, options);
 		      }
 </script>
+
+
 <script type="text/javascript">
 	google.charts.load('current', {'packages' : [ 'line' ]});
 	google.charts.setOnLoadCallback(drawChart);
 	
 	function drawChart() {
-		<% if(session.getAttribute("Sid") != null && sv.getDate() != null){%>
+		<% if(session.getAttribute("Sid") != null && select_sv.getSpeed() != null && !select_sv.getMode().equals("T")){%>
+		
+		var speedArr = new Array();
+		<%for (int j = 1; j < time; j++) {%>
+		speedArr[<%=j%>] = <%=speed[j]%>;
+		<%}%>
+		
+		var balArr = new Array();
+		<%for (int k = 1; k < time; k++) {%>
+		balArr[<%=k%>] = <%=gyro[k]%>;
+		<%}%>
 
 		
-		var falldownArr = new Array();
-		<%for (int k = 0; k < index; k++) {%>
-		falldownArr[<%=k%>] = <%=falldown[k]%>;
+		var fallArr = new Array();
+		<%for (int k = 1; k < time; k++) {%>
+		fallArr[<%=k%>] = <%=falldown[k]%>;
 		<%}%>
 		
 		<%}%>
 		
+		var data = new google.visualization.DataTable();
 
-	var data = new google.visualization.DataTable();
+			data.addColumn('number', 'Time(s)');
+			data.addColumn('number', 'Speed');
+			data.addColumn('number', 'Balance');
+			data.addColumn('number', 'fall-down');
 
-		data.addColumn('number', '횟수');
-		data.addColumn('number', '넘어진 횟수');
-		
-		for (var i = 0; i < <%=index%>; i++) {
-			data.addRows([[ i,  falldownArr[i] ] ]);
-		}
+			for (var i = 1; i < <%=time%>; i++) {
+				data.addRows([ [ i, speedArr[i], balArr[i], fallArr[i] ] ]);
+			}
 
-		var chart = new google.visualization.LineChart(document.getElementById('linechart_material3'));
+		var chart = new google.visualization.LineChart(document.getElementById('linechart_material1'));
 
 		chart.draw(data);
 
 	}
 </script>
-<!-- 날짜별 그래프
-<script src="//www.google.com/jsapi"></script>
-<script type="text/javascript"
-	src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-	google.charts.load('current', {
-		'packages' : [ 'line' ]
-	});
+	google.charts.load('current', {'packages' : [ 'line' ]});
 	google.charts.setOnLoadCallback(drawChart);
-	
-	function drawChart() {
-		<% if(session.getAttribute("Sid") != null && sv.getDate() != null){%>
-		
-		var yyArr = new Array();
-		<%for (int n = 0; n < index; n++) {%>
-		yyArr[<%=n%>] = <%=yy[n]%>;
-		<%}%>
-		
-		var mmArr = new Array();
-		<%for (int n = 0; n < index; n++) {%>
-		mmArr[<%=n%>] = <%=mm[n]%>;
-		<%}%>
-		
-		var ddArr = new Array();
-		<%for (int n = 0; n < index; n++) {%>
-		ddArr[<%=n%>] = <%=dd[n]%>;
-		<%}%>
-		
-		var scoreArr = new Array();
-		<%for (int j = 0; j < index; j++) {%>
-		scoreArr[<%=j%>] = <%=score[j]%>;
-		<%}%>
-		
-		var falldownArr = new Array();
-		<%for (int k = 0; k < index; k++) {%>
-		falldownArr[<%=k%>] = <%=falldown[k]%>;
-		<%}%>
-		
-		<%}%>
-		
 
+	function drawChart() {
+	<% if(session.getAttribute("Sid") != null && select_sv.getMode() != null && select_sv.getMode().equals("T")){%>
+	
+	var frfArr = new Array();
+	<%for (int k = 1; k < time; k++) {%>
+	frfArr[<%=k%>] = <%=FRF[k]%>;
+	<%}%>
+	
+	var frbArr = new Array();
+	<%for (int k = 1; k < time; k++) {%>
+	frbArr[<%=k%>] = <%=FRB[k]%>;
+	<%}%>
+	
+	var yawArr = new Array();
+	<%for (int k = 1; k < time; k++) {%>
+	yawArr[<%=k%>] = <%=yaw[k]%>;
+	<%}%>
+	
+	var balArr = new Array();
+	<%for (int k = 1; k < time; k++) {%>
+	balArr[<%=k%>] = <%=gyro[k]%>;
+	<%}%>
+	
+	<%}%>
+	
 	var data = new google.visualization.DataTable();
 
-		data.addColumn('datetime', '날짜');
-		data.addColumn('number', '평점');
-		data.addColumn('number', '넘어진 횟수');
-		
-		for (var i = 0; i < <%=index%>; i++) {
-			data.addRows([[ new Date(yyArr[i],mmArr[i],ddArr[i]), scoreArr[i], falldownArr[i] ] ]);
+		data.addColumn('number', 'Time(s)');
+		data.addColumn('number', 'FRF');
+		data.addColumn('number', 'FRB');
+		data.addColumn('number', 'YAW');
+		data.addColumn('number', 'Balance');
+
+		for (var i = 1; i < <%=time%>; i++) {
+			data.addRows([ [( i*2/10), frfArr[i], frbArr[i], yawArr[i], balArr[i] ] ]);
 		}
 
-		var chart = new google.charts.Line(document
-				.getElementById('linechart_material'));
 
-		chart.draw(data);
+		var chart = new google.charts.Line(document.getElementById('linechart_material2'));
+
+	
+	chart.draw(data);
 
 	}
 </script>
-
-  -->
 </head>
 
 <body>
@@ -344,12 +428,18 @@ google.charts.setOnLoadCallback(drawChart);
 				<div class="navbar-default sidebar" role="navigation">
 					<div class="sidebar-nav navbar-collapse">
 						<ul class="nav" id="side-menu">
-
+							
 							<li><a class="btn" onclick="home()"><i
 									class="fa fa-dashboard fa-fw"></i> 메인화면</a></li>
 
-							<li><a class="btn" onclick="recent()"><i
-									class="fa fa-bar-chart-o fa-fw"></i> 최근기록</a></li>
+							<li><a class="btn"><i
+									class="fa fa-bar-chart-o fa-fw"></i> 최근기록</a>
+								<ul class="nav nav-second-level">
+									<li><a class="col-xs-offset-3 text-left " onclick="recent_f()" style="cursor:pointer">Free Mode</a></li>
+									<li><a class="col-xs-offset-3 text-left" onclick="recent_p()" style="cursor:pointer">Pendulum Mode</a></li>
+									<li><a class="col-xs-offset-3 text-left" onclick="recent_t()" style="cursor:pointer">Turn Mode</a></li>
+									<li><a class="col-xs-offset-3 text-left" onclick="recent_r()" style="cursor:pointer">Record Mode</a></li>
+								</ul></li>
 
 							<li><a class="btn" onclick="all_list()"><i
 									class="fa fa-table fa-fw"></i> 전체기록</a></li>
@@ -367,17 +457,17 @@ google.charts.setOnLoadCallback(drawChart);
 										}
 									%></a></li>
 						</ul>
-						<img class="nav" src="resources/img/logo.png">
+						<img class="nav" src="resources/img/logo_side.png">
 					</div>
 					<!-- /.sidebar-collapse -->
 				</div>
 			<!-- /.navbar-static-side -->
 		</nav>
-		</div>
-</form>
+	</div>
+	</form>	
 		<!--  										end navigation 								-->
 
-		<div id="page-wrapper">
+		<div id="page-wrapper" class="row">
 			<div class="row">
 				<div class="col-lg-12">
 					<h1 class="page-header">
@@ -414,6 +504,7 @@ google.charts.setOnLoadCallback(drawChart);
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
+                                        	<th>모드</th>
                                             <th>날짜</th>
                                             <th>최고속도</th>
                                             <th>평균속도</th>
@@ -428,14 +519,16 @@ google.charts.setOnLoadCallback(drawChart);
                                     
                                         <c:forEach var="val" items="${lsv}">
                                         <tr>
-                                        	<td>${val.date}</td>
-                                        	<td>${val.max_v}</td>
-                                        	<td>${val.average_v}</td>
-                                        	<td>${val.time}</td>
-                                        	<td>${val.distance}</td>
-                                        	<td>${val.score}</td>
-                                        	<td>${val.falldown}</td>
-                                        	<td>${val.location}</td>
+                                        	
+	                                        	<td><a href="all?num=${val.num}">${val.mode}</a></td>
+	                                        	<td>${val.date}</td>
+	                                        	<td>${val.max_v}</td>
+	                                        	<td>${val.average_v}</td>
+	                                        	<td>${val.time}</td>
+	                                        	<td>${val.distance}</td>
+	                                        	<td>${val.score}</td>
+	                                        	<td>${val.count}</td>
+	                                        	<td>${val.location}</td>
                                         </tr>
                                        </c:forEach> 
                                     </tbody>
@@ -448,6 +541,7 @@ google.charts.setOnLoadCallback(drawChart);
                     </div>
                     <!-- /.panel -->
                 </div>
+                
 				<div class="col-lg-4">
 					<!-- Area Chart Example 	 -->
 					<div class="panel panel-default">
@@ -471,19 +565,71 @@ google.charts.setOnLoadCallback(drawChart);
 							</div>
 						</div>
 					</div>
+					<%if(size<5){%>
+					<div class="panel-body">
+						<div id="curve_chart1" style="height: 180px;"></div>
+					</div>
+					<div class="panel-body">
+						<div id="curve_chart2" style="height: 180px;"></div>
+					</div>
+					<%} %>
+					<%if(size>=5 && size <10){%>
+					<div class="panel-body">
+						<div id="curve_chart1" style="height: 200px;"></div>
+					</div>
+					<div class="panel-body">
+						<div id="curve_chart2" style="height: 200px;"></div>
+					</div>
+					<%} %>
+					<%if(size>=10){%>
 					<div class="panel-body">
 						<div id="curve_chart1" style="height: 250px;"></div>
 					</div>
 					<div class="panel-body">
 						<div id="curve_chart2" style="height: 250px;"></div>
 					</div>
-
+					<%} %>
 					<!-- /.col-lg-6 -->
 
 				</div>
-
+				
                 <!-- /.col-lg-12 -->
             </div>
+            	<div class="col-lg-12">
+					<!-- Area Chart Example 	 -->
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<i class="fa fa-bar-chart-o fa-fw"></i> 선택 데이터
+							<div class="pull-right">
+								<div class="btn-group">
+									<button type="button"
+										class="btn btn-default btn-xs dropdown-toggle"
+										data-toggle="dropdown">
+										Actions <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu pull-right" role="menu">
+										<li><a href="#">일</a></li>
+										<li><a href="#">월</a></li>
+										<li><a href="#">년</a></li>
+										<li class="divider"></li>
+										<li><a href="#">?</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					<% if(select_sv.getMode() != null && select_sv.getMode().equals("T")){ %>
+					<div class="panel-body">
+						<div id="linechart_material1" style="height:400px;"></div>
+					</div>
+					<%}else if(request.getParameter("num") != null){ %>
+					<div class="panel-body">
+						<div id="linechart_material1" style="height: 400px;"></div>
+					</div>
+					<%} %>
+
+				</div>
 			
 		</div>
 

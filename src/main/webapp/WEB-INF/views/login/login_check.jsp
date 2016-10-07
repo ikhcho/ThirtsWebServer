@@ -70,9 +70,24 @@
 		form.action = "home";
 		form.submit();
 	}
-	function recent() {
+	function recent_f() {
 		var form = document.f;
-		form.action = "recent";
+		form.action = "recent_free";
+		form.submit();
+	}
+	function recent_p() {
+		var form = document.f;
+		form.action = "recent_pendulum";
+		form.submit();
+	}
+	function recent_t() {
+		var form = document.f;
+		form.action = "recent_turn";
+		form.submit();
+	}
+	function recent_r() {
+		var form = document.f;
+		form.action = "recent_record";
 		form.submit();
 	}
 	function all_list() {
@@ -122,15 +137,17 @@
 						<i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-user" style="margin-right: 5px">
-						<li><a onclick="profile()" style="cursor:pointer"><i class="fa fa-user fa-fw"></i> 프로필</a></li>
-						<li><a onclick="device()" style="cursor:pointer"><i class="fa fa-gear fa-fw"></i> 장비등록</a></li>
+						<%
+									if (session.getAttribute("Sid") != null) {
+								%> 
+						<li><a onclick="profile()"  style="cursor:pointer"><i class="fa fa-user fa-fw"></i> 프로필</a></li>
+						<li><a onclick="device()"  style="cursor:pointer"><i class="fa fa-gear fa-fw"></i> 장비등록</a></li>
 						<li class="divider"></li>
-						<li><a href="login"><i class="fa fa-user fa-fw"></i>
-								<%
-									if (session.getAttribute("Sid") == null) {
-								%> 로그인<%
+						<li><a href="login"><i class="fa fa-user fa-fw"></i> 로그아웃<%
 									} else {
-								%> 로그아웃<%
+								%> 
+						
+						<li><a href="login"><i class="fa fa-user fa-fw"></i>로그인<%
 									}
 								%></a></li>
 					</ul> <!-- /.dropdown-user --></li>
@@ -141,12 +158,18 @@
 				<div class="navbar-default sidebar" role="navigation">
 					<div class="sidebar-nav navbar-collapse">
 						<ul class="nav" id="side-menu">
-
+							
 							<li><a class="btn" onclick="home()"><i
 									class="fa fa-dashboard fa-fw"></i> 메인화면</a></li>
 
-							<li><a class="btn" onclick="recent()"><i
-									class="fa fa-bar-chart-o fa-fw"></i> 최근기록</a></li>
+							<li><a class="btn"><i
+									class="fa fa-bar-chart-o fa-fw"></i> 최근기록</a>
+								<ul class="nav nav-second-level">
+									<li><a class="col-xs-offset-3 text-left " onclick="recent_f()" style="cursor:pointer">Free Mode</a></li>
+									<li><a class="col-xs-offset-3 text-left" onclick="recent_p()" style="cursor:pointer">Pendulum Mode</a></li>
+									<li><a class="col-xs-offset-3 text-left" onclick="recent_t()" style="cursor:pointer">Turn Mode</a></li>
+									<li><a class="col-xs-offset-3 text-left" onclick="recent_r()" style="cursor:pointer">Record Mode</a></li>
+								</ul></li>
 
 							<li><a class="btn" onclick="all_list()"><i
 									class="fa fa-table fa-fw"></i> 전체기록</a></li>
@@ -164,14 +187,16 @@
 										}
 									%></a></li>
 						</ul>
-						<img class="nav" src="resources/img/logo.png">
+						<img class="nav" src="resources/img/logo_side.png">
 					</div>
 					<!-- /.sidebar-collapse -->
 				</div>
 			<!-- /.navbar-static-side -->
 		</nav>
-</form>
+		</div>
+	</form>	
 		<!--  										end navigation 								-->
+	
 		<div id="page-wrapper">
 			<div class="row">
 				<h1>로그인 되었습니다.</h1>

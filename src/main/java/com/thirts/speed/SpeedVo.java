@@ -1,11 +1,14 @@
 package com.thirts.speed;
 
 public class SpeedVo {
+	private int num;
+	private String mode;
 	private int max_v;
 	private int average_v;
 	private int distance;
 	private int time;
 	private String score;
+	private String count;
 	private String falldown;
 	private String speed;
 	private String gyro;
@@ -14,6 +17,18 @@ public class SpeedVo {
 	private String macaddress;
 	private String date;
 	
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
+	public String getMode() {
+		return mode;
+	}
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
 	public int getMax_v() {
 		return max_v;
 	}
@@ -44,6 +59,13 @@ public class SpeedVo {
 	}
 	public void setScore(String score) {
 		this.score = score;
+	}
+	
+	public String getCount() {
+		return count;
+	}
+	public void setCount(String count) {
+		this.count = count;
 	}
 	public String getFalldown() {
 		return falldown;
