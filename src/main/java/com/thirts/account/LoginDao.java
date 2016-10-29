@@ -22,4 +22,12 @@ public class LoginDao {
 		// TODO Auto-generated method stub
 		return template.selectOne("thirts.searchAccount",id);
 	}
+	
+	public int SaveDevice(LoginVo vo) {
+		return template.insert("thirts.saveDevice",vo);
+	}
+	
+	public int UpdateDevice(LoginVo vo) {
+		return template.insert("thirts.updateDevice",vo);
+	}
 }

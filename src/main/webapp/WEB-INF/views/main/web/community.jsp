@@ -54,9 +54,7 @@
 		form.submit();
 	}
 	function device() {
-		var form = document.f;
-		form.action = "device";
-		form.submit();
+		window.open("device", "장비등록", "width=400, height=300");
 	}
 	function home() {
 		var form = document.f;

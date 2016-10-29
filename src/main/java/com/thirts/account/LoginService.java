@@ -22,4 +22,11 @@ public class LoginService {
 		return dao.SearchAccount(id);
 	}
 	
+	public int SaveDevice(LoginVo vo) {
+		return dao.SaveDevice(vo);
+	}
+	
+	public int UpdateDevice(LoginVo vo) {
+		return dao.UpdateDevice(vo);
+	}
 }

@@ -2,7 +2,22 @@
     pageEncoding="UTF-8" import="org.json.simple.*"%>
 
 <%@ page import="com.thirts.speed.SpeedVo" %>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
 
+<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="resources/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+<link
+	href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600"
+	rel="stylesheet">
+<link href="resources/css/font-awesome.css" rel="stylesheet">
+<link href="resources/mobile/jquery.mobile-1.4.5.min.css"
+	rel="stylesheet" />
+<link href="resources/mobile/jquery-ui.min.css" rel="stylesheet" />
+
+<script src="resources/mobile/jquery-2.1.3.min.js"></script>
 <%
 
 	SpeedVo sv = (SpeedVo) request.getAttribute("sv");
@@ -29,10 +44,6 @@
 	
         // 위에서 만든 각각의 객체를 하나의 배열 형태로 만듬
 	jArray.add(0, jObject1);
-	jArray.add(0, jObject2);
-	jArray.add(0, jObject3);
-	jArray.add(0, jObject4);
-	jArray.add(0, jObject5);
 
         // 최종적으로 배열을 하나로 묶음
 	jsonMain.put("List", jArray);

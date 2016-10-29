@@ -21,12 +21,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT account.id , account.password, account.name , hwstore.macaddress
 		FROM thirts.hwstore right JOIN thirts.account ON hwstore.id = account.id WHERE account.id=#{id}
 	</select>
+	
+	<insert id="saveDevice" parameterType="com.thirts.account.LoginVo" >
+		INSERT INTO hwstore(id, macaddress)
+		VALUES (#{id}, #{macaddress})
+	</insert>
+	
+	<update id="updateDevice" parameterType="String">
+		UPDATE hwstore 
+		SET macaddress=#{macaddress}
+		WHERE id=#{id}
+	</update>
 
 	<insert id="saveSpeed" parameterType="com.thirts.speed.SpeedVo" >
 		INSERT INTO speed(mode, max_v, average_v, distance , time, score, count, falldown, speed, gyro, beacon, location, HW, date)
 		VALUES (#{mode}, ${max_v}, ${average_v}, ${distance}, ${time}, #{score}, #{count}, #{falldown}, #{speed}, #{gyro}, #{beacon}, #{location}, #{macaddress}, #{date})
 	</insert>
-
+	
+	<select id="searchSpeed" parameterType="int" resultType="com.thirts.speed.SpeedVo">
+		SELECT speed.mode, speed.num, speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.falldown, speed.speed, speed.gyro, speed.beacon, speed.location, hwstore.id, speed.date
+		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress
+		WHERE id=#{id}
+		order by speed.num desc limit 1
+	</select>
+	
 	<select id="searchSpeed_f" parameterType="int" resultType="com.thirts.speed.SpeedVo">
 		SELECT speed.mode, speed.num, speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.falldown, speed.speed, speed.gyro, speed.beacon, speed.location, hwstore.id, speed.date
 		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress
@@ -83,6 +101,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress 
 		WHERE speed.HW=#{macaddress}
 		order by speed.date desc
+	</select>
+	
+	<insert id="SaveBeacon" parameterType="com.thirts.pi.PiVo" >
+		INSERT INTO pidata(beacon1, beacon2, beacon3, axis)
+		VALUES (#{beacon1}, #{beacon2}, #{beacon3}, #{axis})
+	</insert>
+	
+	<select id="selectAllBeacon" resultType="com.thirts.pi.PiVo">
+		SELECT *
+		FROM pidata
 	</select>
 	
 	<!-- 

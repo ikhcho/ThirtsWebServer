@@ -163,9 +163,7 @@
 		form.submit();
 	}
 	function device() {
-		var form = document.f;
-		form.action = "device";
-		form.submit();
+		window.open("device", "장비등록", "width=400, height=300");
 	}
 	function home() {
 		var form = document.f;
@@ -291,7 +289,6 @@ google.charts.setOnLoadCallback(drawChart);
 	
 	function drawChart() {
 		<% if(session.getAttribute("Sid") != null && select_sv.getSpeed() != null && !select_sv.getMode().equals("T")){%>
-		
 		var speedArr = new Array();
 		<%for (int j = 1; j < time; j++) {%>
 		speedArr[<%=j%>] = <%=speed[j]%>;
@@ -308,7 +305,7 @@ google.charts.setOnLoadCallback(drawChart);
 		fallArr[<%=k%>] = <%=falldown[k]%>;
 		<%}%>
 		
-		<%}%>
+
 		
 		var data = new google.visualization.DataTable();
 
@@ -324,7 +321,7 @@ google.charts.setOnLoadCallback(drawChart);
 		var chart = new google.visualization.LineChart(document.getElementById('linechart_material1'));
 
 		chart.draw(data);
-
+		<%}%>
 	}
 </script>
 <script type="text/javascript">
@@ -332,48 +329,48 @@ google.charts.setOnLoadCallback(drawChart);
 	google.charts.setOnLoadCallback(drawChart);
 
 	function drawChart() {
-	<% if(session.getAttribute("Sid") != null && select_sv.getMode() != null && select_sv.getMode().equals("T")){%>
+		<% if(session.getAttribute("Sid") != null && select_sv.getMode() != null && select_sv.getMode().equals("T")){%>
+		
+		var frfArr = new Array();
+		<%for (int k = 1; k < time; k++) {%>
+		frfArr[<%=k%>] = <%=FRF[k]%>;
+		<%}%>
+		
+		var frbArr = new Array();
+		<%for (int k = 1; k < time; k++) {%>
+		frbArr[<%=k%>] = <%=FRB[k]%>;
+		<%}%>
+		
+		var yawArr = new Array();
+		<%for (int k = 1; k < time; k++) {%>
+		yawArr[<%=k%>] = <%=yaw[k]%>;
+		<%}%>
+		
+		var balArr = new Array();
+		<%for (int k = 1; k < time; k++) {%>
+		balArr[<%=k%>] = <%=gyro[k]%>;
+		<%}%>
+		
+		
+		
+		var data = new google.visualization.DataTable();
 	
-	var frfArr = new Array();
-	<%for (int k = 1; k < time; k++) {%>
-	frfArr[<%=k%>] = <%=FRF[k]%>;
-	<%}%>
+			data.addColumn('number', 'Time(s)');
+			data.addColumn('number', 'FRF');
+			data.addColumn('number', 'FRB');
+			data.addColumn('number', 'YAW');
+			data.addColumn('number', 'Balance');
 	
-	var frbArr = new Array();
-	<%for (int k = 1; k < time; k++) {%>
-	frbArr[<%=k%>] = <%=FRB[k]%>;
-	<%}%>
-	
-	var yawArr = new Array();
-	<%for (int k = 1; k < time; k++) {%>
-	yawArr[<%=k%>] = <%=yaw[k]%>;
-	<%}%>
-	
-	var balArr = new Array();
-	<%for (int k = 1; k < time; k++) {%>
-	balArr[<%=k%>] = <%=gyro[k]%>;
-	<%}%>
-	
-	<%}%>
-	
-	var data = new google.visualization.DataTable();
+			for (var i = 1; i < <%=time%>; i++) {
+				data.addRows([ [( i*2/10), frfArr[i], frbArr[i], yawArr[i], balArr[i] ] ]);
+			}
 
-		data.addColumn('number', 'Time(s)');
-		data.addColumn('number', 'FRF');
-		data.addColumn('number', 'FRB');
-		data.addColumn('number', 'YAW');
-		data.addColumn('number', 'Balance');
 
-		for (var i = 1; i < <%=time%>; i++) {
-			data.addRows([ [( i*2/10), frfArr[i], frbArr[i], yawArr[i], balArr[i] ] ]);
-		}
-
-
-		var chart = new google.charts.Line(document.getElementById('linechart_material2'));
+		var chart = new google.visualization.LineChart(document.getElementById('linechart_material2'));
 
 	
 	chart.draw(data);
-
+	<%}%>
 	}
 </script>
 </head>
@@ -621,7 +618,7 @@ google.charts.setOnLoadCallback(drawChart);
 					</div>
 					<% if(select_sv.getMode() != null && select_sv.getMode().equals("T")){ %>
 					<div class="panel-body">
-						<div id="linechart_material1" style="height:400px;"></div>
+						<div id="linechart_material2" style="height:400px;"></div>
 					</div>
 					<%}else if(request.getParameter("num") != null){ %>
 					<div class="panel-body">

@@ -55,7 +55,7 @@
 	
 	function loginCheck() {
 		var form = document.newac;
-		form.action = "register";
+		form.action = "m_register";
 		form.submit();
 	}
 </script>
@@ -69,7 +69,7 @@
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
                         <h3 class="text-center">회원가입</h3>
-                        <div class="text-right"><a href="login"><i class="fa fa-arrow-left fa-fw"></i></a></div>
+                        <div class="text-right"><a href="m_login"><i class="fa fa-arrow-left fa-fw"></i></a></div>
                     </div>
                     <div class="panel-body">
                         <form name="newac" method="post">

@@ -17,6 +17,10 @@ public class SpeedService {
 		return dao.SaveSpeed(vo);
 	}
 
+	public SpeedVo SearchSpeed(String id){
+		return dao.SearchSpeed(id);
+	}
+	
 	public SpeedVo SearchSpeed_f(String id){
 		return dao.SearchSpeed_f(id);
 	}

@@ -18,7 +18,11 @@ public class SpeedDao {
 	public int SaveSpeed(SpeedVo vo) {
 		return template.insert("thirts.saveSpeed",vo);
 	}
-
+	public SpeedVo SearchSpeed(String id) {
+		// TODO Auto-generated method stub
+		return template.selectOne("thirts.searchSpeed",id);
+	}
+	
 	public SpeedVo SearchSpeed_f(String id) {
 		// TODO Auto-generated method stub
 		return template.selectOne("thirts.searchSpeed_f",id);

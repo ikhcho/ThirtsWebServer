@@ -23,6 +23,9 @@ import com.thirts.account.LoginService;
 import com.thirts.account.LoginVo;
 import com.thirts.main.MainService;
 import com.thirts.main.MainVo;
+import com.thirts.pi.PiService;
+import com.thirts.pi.PiVo;
+
 
 @Controller
 public class HomeController {
@@ -38,6 +41,10 @@ public class HomeController {
 	@Autowired
 	@Qualifier("mainService")
 	MainService mService;
+	
+	@Autowired
+	@Qualifier("piService")
+	PiService pService;
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
@@ -68,7 +75,7 @@ public class HomeController {
 				mv.addObject("vo", checkaccount);
 				return mv;
 			} else {
-				mv.setViewName("login/loginFail");
+				mv.setViewName("login/incorrect");
 				return mv;
 			}
 		} else {
@@ -127,6 +134,106 @@ public class HomeController {
 			return mv;
 		}
 		*/
+		@RequestMapping(value = "/m_home", method = RequestMethod.GET)
+		public ModelAndView m_home() {
+		
+			ModelAndView mv = new ModelAndView();
+
+			mv.setViewName("main/android/m_home");
+			return mv;
+			
+		}
+		@RequestMapping(value = "/m_recent", method = RequestMethod.GET)
+		public ModelAndView m_recent (@RequestParam(value = "id") String id) {
+			ModelAndView mv = new ModelAndView();
+			SpeedVo sv = sService.SearchSpeed(id);
+			mv.addObject("sv", sv);
+			mv.setViewName("main/android/m_recent");
+			
+			return mv;
+		}
+		@RequestMapping(value = "/m_all", method = RequestMethod.GET)
+		public ModelAndView m_all(LoginVo vo) {
+			ModelAndView mv = new ModelAndView();
+			List<SpeedVo> LSV = sService.searchAllSpeed(vo.getId());
+			mv.addObject("lsv", LSV);
+			mv.setViewName("main/android/m_all");
+			return mv;
+		}
+		@RequestMapping(value = "/m_tracking", method = RequestMethod.GET)
+		public ModelAndView m_tracking(Model model) {
+			ModelAndView mv = new ModelAndView();
+			List<PiVo> LPV = pService.selectAllBeacon();
+			mv.addObject("lpv", LPV);
+			mv.setViewName("main/android/m_tracking");
+			return mv;
+		}
+		
+		@RequestMapping(value = "/m_rank", method = RequestMethod.GET)
+		public ModelAndView m_rank(LoginVo vo) {
+		
+			ModelAndView mv = new ModelAndView();
+			
+			mv.setViewName("main/android/m_rank");
+			return mv;
+			
+		}
+		
+		@RequestMapping(value = "/m_login")
+		public String m_login() {
+			return "main/android/m_login";
+		}
+		
+		@RequestMapping(value = "/m_login_check", method = RequestMethod.POST)
+		public ModelAndView m_selectId(LoginVo vo) {
+
+			ModelAndView mv = new ModelAndView();
+			LoginVo checkaccount = lService.SearchAccount(vo.getId());
+
+			if (checkaccount != null && vo.getId() != "") {
+				if (vo.getId().equals(checkaccount.getId()) && vo.getPassword().equals(checkaccount.getPassword())) {
+					mv.setViewName("main/android/m_login_check");
+					mv.addObject("vo", checkaccount);
+					return mv;
+				} else {
+					mv.setViewName("login/incorrect");
+					return mv;
+				}
+			} else {
+				mv.setViewName("login/loginFail");
+				return mv;
+			}
+		}
+		
+		@RequestMapping(value = "/m_register")
+		public String m_register() {
+			return "main/android/m_register";
+		}
+		@RequestMapping(value = "/m_register", method = RequestMethod.POST)
+		public ModelAndView m_insertAccount(LoginVo vo) {
+
+			ModelAndView mv = new ModelAndView();
+			if(vo.getId() != "")
+			{
+				if (vo.getPassword().equals(vo.getPassword_check())) {
+					LoginVo checkaccount = lService.SearchAccount(vo.getId());
+					
+					if (checkaccount != null && vo.getId() != "") {
+						mv.setViewName("login/duplication");
+						return mv;
+					}
+					lService.SaveAccount(vo);
+					mv.setViewName("main/android/m_login");
+					return mv;
+				} else {
+					mv.setViewName("login/incorrect");
+					return mv;
+				}
+			}
+			mv.setViewName("main/android/m_register");
+			return mv;
+		}
+		
 		//=========================================================//
 		
 		//=======================web===============================//
@@ -190,11 +297,31 @@ public class HomeController {
 			return mv;
 			
 		}
+		@RequestMapping(value = "/device", method = RequestMethod.GET)
+		public ModelAndView device() {
+		
+			ModelAndView mv = new ModelAndView();
+			
+			mv.setViewName("main/web/device");
+			return mv;
+			
+		}
+		
 		@RequestMapping(value = "/device", method = RequestMethod.POST)
 		public ModelAndView device(LoginVo vo) {
 		
 			ModelAndView mv = new ModelAndView();
-			
+			LoginVo check = lService.SearchAccount(vo.getId());
+			if(check.getMacaddress() == null)
+			{
+				lService.SaveDevice(vo);
+				mv.addObject("vo", vo);
+			}
+			else
+			{
+				lService.UpdateDevice(vo);
+				mv.addObject("vo", vo);
+			}
 			mv.setViewName("main/web/device");
 			return mv;
 			
@@ -254,6 +381,7 @@ public class HomeController {
 			
 			ModelAndView mv = new ModelAndView();
 			SpeedVo osv = sService.selectOneAllSpeed(num);
+			System.out.println(osv.getMacaddress());
 			List<SpeedVo> LSV = sService.selectAllSpeed(osv.getMacaddress());
 			mv.addObject("osv", osv);
 			mv.addObject("lsv", LSV);
@@ -264,12 +392,70 @@ public class HomeController {
 		@RequestMapping(value = "/tracking", method = RequestMethod.GET)
 		public ModelAndView tracking(Model model) {
 			ModelAndView mv = new ModelAndView();
+			List<PiVo> LPV = pService.selectAllBeacon();
+			mv.addObject("lpv", LPV);
 			mv.setViewName("main/log/tracking");
 			return mv;
+		}
+		@RequestMapping(value = "/tracking2", method = RequestMethod.GET)
+		public ModelAndView tracking2(Model model) {
+			ModelAndView mv = new ModelAndView();
+			List<PiVo> LPV = pService.selectAllBeacon();
+			mv.addObject("lpv", LPV);
+			mv.setViewName("main/log/tracking2");
+			return mv;
+		}
+		
+		@RequestMapping(value = "/geo", method = RequestMethod.GET)
+		public ModelAndView geo() {
+		
+			ModelAndView mv = new ModelAndView();
+			
+			mv.setViewName("main/log/geo");
+			return mv;
+			
 		}
 		//==========================================================//
 	
 		//========================db=================================//
+		public static String CalibrationScore(String mode, int max_v, int distance, int time, String count)
+		{
+			if(mode.equals("F"))
+			{
+				System.out.print("Free mode Score test");
+				System.out.print(max_v);
+				System.out.print(distance);
+				System.out.print(time);
+				System.out.println(count);
+			}
+			else if(mode.equals("P"))
+			{
+				System.out.print("Pendulum mode Score test");
+				System.out.print(max_v);
+				System.out.print(distance);
+				System.out.print(time);
+				System.out.println(count);
+			}
+			else if(mode.equals("T"))
+			{
+				System.out.print("Turn mode Score test");
+				System.out.print(max_v);
+				System.out.print(distance);
+				System.out.print(time);
+				System.out.println(count);
+			}
+			else if(mode.equals("R"))
+			{
+				System.out.print("Record mode Score test");
+				System.out.print(max_v);
+				System.out.print(distance);
+				System.out.print(time);
+				System.out.println(count);
+			}
+			String score="4";
+			return score;
+		}
+		
 		@RequestMapping(value = "/db/receivedata", method = RequestMethod.GET)
 		public String receivedata(@RequestParam(value = "mode", required = false, defaultValue = "1") String mode,
 				@RequestParam(value = "max_v", required = false, defaultValue = "2") int max_v,
@@ -286,7 +472,8 @@ public class HomeController {
 			
 			Date d = new Date();
 			String date = d.toString();
-			String score = "4";
+			
+			String cal_score = CalibrationScore(mode,max_v,distance,time,count);
 			
 			SpeedVo vo = new SpeedVo();
 			vo.setMode(mode);
@@ -294,7 +481,7 @@ public class HomeController {
 			vo.setAverage_v(average_v);
 			vo.setDistance(distance);
 			vo.setTime(time);
-			vo.setScore(score);
+			vo.setScore(cal_score);
 			vo.setCount(count);
 			vo.setFalldown(falldown);
 			vo.setSpeed(speed);
@@ -310,6 +497,21 @@ public class HomeController {
 			return "db/receivedata";
 		}
 		
+		@RequestMapping(value = "/db/ble_test", method = RequestMethod.GET)
+		public String receivedata(@RequestParam(value = "beacon1", required = false, defaultValue = "1") String beacon1,
+				@RequestParam(value = "beacon2", required = false, defaultValue = "2") String beacon2,
+				@RequestParam(value = "beacon3", required = false, defaultValue = "3") String beacon3,
+				@RequestParam(value = "axis", required = false, defaultValue = "4") String axis){
+			
+			PiVo vo = new PiVo();
+			vo.setBeacon1(beacon1);
+			vo.setBeacon2(beacon2);
+			vo.setBeacon3(beacon3);
+			vo.setAxis(axis);
+			
+			pService.SaveBeacon(vo);
+			return "db/ble_test";
+		}
 		//=============================================================//
 		
 		//=====================bootstrap test==============================//

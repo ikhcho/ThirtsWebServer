@@ -109,9 +109,7 @@
 		form.submit();
 	}
 	function device() {
-		var form = document.f;
-		form.action = "device";
-		form.submit();
+		window.open("device", "장비등록", "width=400, height=300");
 	}
 	function home() {
 		var form = document.f;
@@ -159,9 +157,7 @@
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-	google.charts.load('current', {
-		'packages' : [ 'line' ]
-	});
+	google.charts.load('current', {'packages' : [ 'line','corechart' ]	});
 	google.charts.setOnLoadCallback(drawChart);
 
 	function drawChart() {
@@ -209,6 +205,56 @@
 	}
 </script>
 
+<script type="text/javascript">
+google.charts.setOnLoadCallback(drawChart);
+	function drawChart() {
+		
+		var data = new google.visualization.DataTable();
+        data.addColumn('number', 'x축');
+        data.addColumn('number', 'y축');
+        
+        for (var i = 1; i <=5; i++) {
+			data.addRows([[ 150+(i*20), 600-(i*5)] ]);
+		}
+        for (var i = 1; i <=3; i++) {
+			data.addRows([[ 250+(i*10), 575-(i*5)] ]);
+		}
+        for (var i = 1; i <=3; i++) {
+			data.addRows([[ 280-(i*10), 560-(i*5)] ]);
+		}
+        for (var i = 1; i <=5; i++) {
+			data.addRows([[ 250-(i*20), 545-(i*6)] ]);
+		}
+        for (var i = 1; i <=3; i++) {
+			data.addRows([[ 150-(i*10), 515-(i*5)] ]);
+		}
+        for (var i = 1; i <=10; i++) {
+			data.addRows([[ 120+(i*25), 485-(i*4)] ]);
+		}
+        data.addRows([[ 375, 440] ]);
+        data.addRows([[ 378, 435] ]);
+        data.addRows([[ 375, 435] ]);
+        for (var i = 1; i <=10; i++) {
+			data.addRows([[ 375-(i*20), 435-(i*5)] ]);
+		}
+        
+		var options = {
+				  hAxis: {minValue: 0, maxValue: 500, gridlines:{color:'none'}},
+		          vAxis: {minValue: 0, maxValue: 500, gridlines:{color:'none'}},
+		          colors: ['red'],
+		          pointSize: 12,
+		          legend: 'none',
+		          backgroundColor : 'none'
+		        };
+
+		var chart = new google.visualization.ScatterChart(document.getElementById('animatedshapes_div'));
+
+
+	      chart.draw(data, options);
+		      }
+
+	
+</script>
 </head>
 
 <body>
@@ -350,10 +396,12 @@
 							</div>
 						</div>
 					</div>
-					<img class="col-lg-6" src="resources/img/slope_detail.jpg">
-				</div>
-			</div>
-				<div class="col-lg-12" style="margin-top:20px">
+					<div class="col-lg-6">
+						<div id="animatedshapes_div" style="height: 600px;background-image: url('resources/img/slope_detail.jpg');  background-size: contain;background-repeat: no-repeat;"></div>
+					</div>
+				
+			
+				<div class="col-lg-6" style="margin-top:20px">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<i class="fa fa-bar-chart-o fa-fw"></i> ${sv.getLocation()} 	 ${sv.getDate()}
@@ -377,7 +425,8 @@
 						</div>
 						<div id="linechart_material" style="height: 400px;"></div>
 					</div>
-
+					</div>
+				</div>
 			</div>
 
 	<!-- jQuery -->
