@@ -116,8 +116,7 @@
 
 <body>
 <form method="post" class="signin" name="f">
-				<input type="hidden" name="id"
-					value="<%=session.getAttribute("Sid")%>">
+
 	<div id="wrapper">
 		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
@@ -193,7 +192,6 @@
 										}
 									%></a></li>
 						</ul>
-						<img class="nav" src="resources/img/logo_side.png">
 					</div>
 					<!-- /.sidebar-collapse -->
 				</div>

@@ -18,17 +18,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<select id="searchAccount" parameterType="String" resultType="com.thirts.account.LoginVo">
-		SELECT account.id , account.password, account.name , hwstore.macaddress
-		FROM thirts.hwstore right JOIN thirts.account ON hwstore.id = account.id WHERE account.id=#{id}
+		SELECT id , password, name , macaddress
+		FROM account
+		WHERE id=#{id}
 	</select>
 	
 	<insert id="saveDevice" parameterType="com.thirts.account.LoginVo" >
-		INSERT INTO hwstore(id, macaddress)
-		VALUES (#{id}, #{macaddress})
+		UPDATE account 
+		SET macaddress=#{macaddress}
+		WHERE id=#{id}
 	</insert>
 	
 	<update id="updateDevice" parameterType="String">
-		UPDATE hwstore 
+		UPDATE acount 
 		SET macaddress=#{macaddress}
 		WHERE id=#{id}
 	</update>
@@ -39,43 +41,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<select id="searchSpeed" parameterType="int" resultType="com.thirts.speed.SpeedVo">
-		SELECT speed.mode, speed.num, speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.falldown, speed.speed, speed.gyro, speed.beacon, speed.location, hwstore.id, speed.date
-		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress
+		SELECT speed.mode, speed.num, speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.falldown, speed.speed, speed.gyro, speed.beacon, speed.location, account.id, speed.date
+		FROM thirts.speed right JOIN thirts.account ON speed.HW = account.macaddress
 		WHERE id=#{id}
 		order by speed.num desc limit 1
 	</select>
 	
 	<select id="searchSpeed_f" parameterType="int" resultType="com.thirts.speed.SpeedVo">
-		SELECT speed.mode, speed.num, speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.falldown, speed.speed, speed.gyro, speed.beacon, speed.location, hwstore.id, speed.date
-		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress
+		SELECT speed.mode, speed.num, speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.falldown, speed.speed, speed.gyro, speed.beacon, speed.location, account.id, speed.date
+		FROM thirts.speed right JOIN thirts.account ON speed.HW = account.macaddress
 		WHERE id=#{id} and mode="F"
 		order by speed.num desc limit 1
 	</select>
 	
 	<select id="searchSpeed_p" parameterType="int" resultType="com.thirts.speed.SpeedVo">
-		SELECT speed.mode, speed.num, speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.falldown, speed.speed, speed.gyro, speed.beacon, speed.location, hwstore.id, speed.date
-		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress
+		SELECT speed.mode, speed.num, speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.falldown, speed.speed, speed.gyro, speed.beacon, speed.location, account.id, speed.date
+		FROM thirts.speed right JOIN thirts.account ON speed.HW = account.macaddress
 		WHERE id=#{id} and mode="P"
 		order by speed.num desc limit 1
 	</select>
 	
 	<select id="searchSpeed_t" parameterType="int" resultType="com.thirts.speed.SpeedVo">
-		SELECT speed.mode, speed.num, speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.falldown, speed.speed, speed.gyro, speed.beacon, speed.location, hwstore.id, speed.date
-		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress
+		SELECT speed.mode, speed.num, speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.falldown, speed.speed, speed.gyro, speed.beacon, speed.location, account.id, speed.date
+		FROM thirts.speed right JOIN thirts.account ON speed.HW = account.macaddress
 		WHERE id=#{id} and mode="T"
 		order by speed.num desc limit 1
 	</select>
 	
 	<select id="searchSpeed_r" parameterType="int" resultType="com.thirts.speed.SpeedVo">
-		SELECT speed.mode, speed.num, speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.falldown, speed.speed, speed.gyro, speed.beacon, speed.location, hwstore.id, speed.date
-		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress
+		SELECT speed.mode, speed.num, speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.falldown, speed.speed, speed.gyro, speed.beacon, speed.location, account.id, speed.date
+		FROM thirts.speed right JOIN thirts.account ON speed.HW = account.macaddress
 		WHERE id=#{id} and mode="R"
 		order by speed.num desc limit 1
 	</select>
 	
 	<select id="selectAllList" resultType="com.thirts.main.MainVo">
-		SELECT hwstore.id, speed.location
-		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress WHERE id=#{id}
+		SELECT account.id, speed.location
+		FROM thirts.speed right JOIN thirts.account ON speed.HW = account.macaddress WHERE id=#{id}
 	</select>
 	
 	<select id="SearchCount" parameterType="String" resultType="com.thirts.main.MainVo">
@@ -85,20 +87,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="searchAllSpeed" resultType="com.thirts.speed.SpeedVo">
 		SELECT speed.num, speed.mode, speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.count, speed.speed, speed.gyro, speed.beacon, speed.location, speed.date
-		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress 
+		FROM thirts.speed right JOIN thirts.account ON speed.HW = account.macaddress 
 		WHERE id=#{id}
 		order by speed.date desc
 	</select>
 	
 	<select id="selectOneAllSpeed" resultType="com.thirts.speed.SpeedVo">
 		SELECT speed.num, speed.mode, speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.count, speed.falldown, speed.speed, speed.gyro, speed.beacon, speed.location, speed.HW as macaddress, speed.date
-		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress 
+		FROM thirts.speed right JOIN thirts.account ON speed.HW = account.macaddress 
 		WHERE num=#{num}
 	</select>
 	
 	<select id="selectAllSpeed" resultType="com.thirts.speed.SpeedVo">
 		SELECT speed.num, speed.mode, speed.max_v , speed.average_v , speed.distance , speed.time, speed.score, speed.count, speed.falldown, speed.speed, speed.gyro, speed.beacon, speed.location, speed.date, speed.HW
-		FROM thirts.speed right JOIN thirts.hwstore ON speed.HW = hwstore.macaddress 
+		FROM thirts.speed right JOIN thirts.account ON speed.HW = account.macaddress 
 		WHERE speed.HW=#{macaddress}
 		order by speed.date desc
 	</select>
@@ -112,6 +114,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT *
 		FROM pidata
 	</select>
+	
+	<select id="searchRank_m" resultType="com.thirts.rank.RankVo">
+		SELECT account.id, account.name, speed.num, speed.mode, speed.max_v ,speed.average_v ,speed.score, speed.location, speed.date, speed.HW
+		FROM thirts.speed right JOIN thirts.account ON speed.HW = account.macaddress
+		WHERE speed.location=#{location} and speed.mode="R" and speed.score not in("X")
+		order by speed.max_v desc
+	</select>
+	
+	<select id="searchRank_a" resultType="com.thirts.rank.RankVo">
+		SELECT account.id, account.name, speed.num, speed.mode, speed.max_v ,speed.average_v ,speed.score, speed.location, speed.date, speed.HW
+		FROM thirts.speed right JOIN thirts.account ON speed.HW = account.macaddress
+		WHERE speed.location=#{location} and speed.mode="R"and speed.score not in("X")
+		order by speed.average_v desc
+	</select>
+	
+	<select id="searchRank_s" resultType="com.thirts.rank.RankVo">
+		SELECT account.id, account.name, speed.num, speed.mode, speed.max_v ,speed.average_v ,speed.score, speed.location, speed.date, speed.HW
+		FROM thirts.speed right JOIN thirts.account ON speed.HW = account.macaddress
+		WHERE speed.location=#{location} and speed.mode="R" and speed.score not in("X")
+		order by speed.score desc
+	</select>
+	
 	
 	<!-- 
 	<delete id="deleteCalendar" parameterType="int">

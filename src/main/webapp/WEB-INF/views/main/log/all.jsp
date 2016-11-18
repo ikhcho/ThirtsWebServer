@@ -16,7 +16,8 @@
 	
 	String[] score = new String[size];
 	String[] count = new String[size];
-	int index=0;
+	int score_index=0;
+	int count_index=0;
 	String[] tmpDate={};
 	
 	SpeedVo sv = new SpeedVo();
@@ -29,9 +30,11 @@
 		for(int v=0; v <size; v++)
 		{
 			sv = LSV.get(v);
-			
-			score[index] =sv.getScore();
-			count[index++] =sv.getCount();
+			if(!sv.getScore().equals("X"))
+			{
+				score[score_index++] =sv.getScore();
+			}
+			count[count_index++] =sv.getCount();
 		}	
 	}
 	
@@ -218,7 +221,7 @@
 		<% if(session.getAttribute("Sid") != null && sv.getScore() != null){%>
 
 		var scoreArr = new Array();
-		<%for (int j = 0; j < index; j++) {%>
+		<%for (int j = 0; j < score_index; j++) {%>
 		scoreArr[<%=j%>] = <%=score[j]%>;
 		<%}%>
 		
@@ -230,8 +233,8 @@
 		data.addColumn('number', '횟수');
 		data.addColumn('number', '평점');
 		
-		for (var i = 0; i < <%=index%>; i++) {
-			data.addRows([[ i, scoreArr[i]] ]);
+		for (var i = 1; i <= <%=score_index%>; i++) {
+			data.addRows([[ i, scoreArr[i-1]] ]);
 		}
 
 		 var options = {
@@ -256,7 +259,7 @@ google.charts.setOnLoadCallback(drawChart);
 
 		
 		var falldownArr = new Array();
-		<%for (int k = 0; k < index; k++) {%>
+		<%for (int k = 0; k < count_index; k++) {%>
 		falldownArr[<%=k%>] = <%=count[k]%>;
 		<%}%>
 		
@@ -268,8 +271,8 @@ google.charts.setOnLoadCallback(drawChart);
 		data.addColumn('number', '횟수');
 		data.addColumn('number', '넘어진 횟수');
 		
-		for (var i = 0; i < <%=index%>; i++) {
-			data.addRows([[ i,  falldownArr[i] ] ]);
+		for (var i = 1; i <= <%=count_index%>; i++) {
+			data.addRows([[ i,  falldownArr[i-1] ] ]);
 		}
 		 var options = {
 		          curveType: 'function',
@@ -454,7 +457,7 @@ google.charts.setOnLoadCallback(drawChart);
 										}
 									%></a></li>
 						</ul>
-						<img class="nav" src="resources/img/logo_side.png">
+						
 					</div>
 					<!-- /.sidebar-collapse -->
 				</div>
@@ -544,22 +547,7 @@ google.charts.setOnLoadCallback(drawChart);
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<i class="fa fa-bar-chart-o fa-fw"></i> 향상도
-							<div class="pull-right">
-								<div class="btn-group">
-									<button type="button"
-										class="btn btn-default btn-xs dropdown-toggle"
-										data-toggle="dropdown">
-										Actions <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu pull-right" role="menu">
-										<li><a href="#">일</a></li>
-										<li><a href="#">월</a></li>
-										<li><a href="#">년</a></li>
-										<li class="divider"></li>
-										<li><a href="#">?</a></li>
-									</ul>
-								</div>
-							</div>
+							
 						</div>
 					</div>
 					<%if(size<5){%>
@@ -592,41 +580,35 @@ google.charts.setOnLoadCallback(drawChart);
 				
                 <!-- /.col-lg-12 -->
             </div>
-            	<div class="col-lg-12">
+            	
+            	 <% if(select_sv.getMode() != null && select_sv.getMode().equals("T")){ %>
 					<!-- Area Chart Example 	 -->
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<i class="fa fa-bar-chart-o fa-fw"></i> 선택 데이터
-							<div class="pull-right">
-								<div class="btn-group">
-									<button type="button"
-										class="btn btn-default btn-xs dropdown-toggle"
-										data-toggle="dropdown">
-										Actions <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu pull-right" role="menu">
-										<li><a href="#">일</a></li>
-										<li><a href="#">월</a></li>
-										<li><a href="#">년</a></li>
-										<li class="divider"></li>
-										<li><a href="#">?</a></li>
-									</ul>
-								</div>
-							</div>
+							
 						</div>
 						
 					</div>
-					<% if(select_sv.getMode() != null && select_sv.getMode().equals("T")){ %>
+					
 					<div class="panel-body">
 						<div id="linechart_material2" style="height:400px;"></div>
 					</div>
 					<%}else if(request.getParameter("num") != null){ %>
+					<!-- Area Chart Example 	 -->
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<i class="fa fa-bar-chart-o fa-fw"></i> 선택 데이터
+							
+						</div>
+						
+					</div>
 					<div class="panel-body">
 						<div id="linechart_material1" style="height: 400px;"></div>
 					</div>
 					<%} %>
 
-				</div>
+				
 			
 		</div>
 

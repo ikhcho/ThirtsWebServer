@@ -3,10 +3,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.thirts.speed.SpeedVo"%>
 <%@ page import="com.thirts.speed.SpeedService"%>
+<%@ page import="com.thirts.rank.RankVo"%>
+<%@ page import="com.thirts.rank.RankService"%>
+<%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html lang="en">
 
 <%
+	int myrank=0;
 
 	String[] speed={};
 	String[] falldown={};
@@ -29,8 +33,18 @@
 					falldown[i] = "0";
 				}
 			}
+			List<RankVo> LRV = (List<RankVo>)request.getAttribute("lrv");
+			for(int j=0; j <LRV.size(); j++)
+			{
+				if(sv.getNum() == LRV.get(j).getNum())
+				{
+					myrank=j+1;
+					break;
+					
+				}
+			}
 		}
-		
+
 
 %>
 
@@ -251,7 +265,6 @@
 										}
 									%></a></li>
 						</ul>
-						<img class="nav" src="resources/img/logo_side.png">
 					</div>
 					<!-- /.sidebar-collapse -->
 				</div>
@@ -293,22 +306,7 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<i class="fa fa-bar-chart-o fa-fw"></i> ${sv.getLocation()} 	 ${sv.getDate()}
-							<div class="pull-right">
-								<div class="btn-group">
-									<button type="button"
-										class="btn btn-default btn-xs dropdown-toggle"
-										data-toggle="dropdown">
-										Actions <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu pull-right" role="menu">
-										<li><a href="#">일</a></li>
-										<li><a href="#">월</a></li>
-										<li><a href="#">년</a></li>
-										<li class="divider"></li>
-										<li><a href="#">?</a></li>
-									</ul>
-								</div>
-							</div>
+							
 						</div>
 					</div>
 					</div>
@@ -320,7 +318,7 @@
 										<i class="glyphicon glyphicon-time fa-5x"></i>
 									</div>
 									<div class="col-xs-9 text-right">
-										<div class="huge">${sv.getTime()}</div>
+										<div class="huge">${sv.getTime()}초</div>
 
 									</div>
 								</div>
@@ -342,7 +340,7 @@
 										<i class="fa fa-road fa-5x"></i>
 									</div>
 									<div class="col-xs-9 text-right">
-										<div class="huge">${sv.getDistance()}</div>
+										<div class="huge">${sv.getDistance()}M</div>
 									</div>
 								</div>
 							</div>
@@ -365,7 +363,7 @@
 										<i class="fa fa-dashboard fa-5x"></i>
 									</div>
 									<div class="col-xs-9 text-right">
-										<div class="huge">${sv.getAverage_v()}</div>
+										<div class="huge">${sv.getAverage_v()}m/s</div>
 
 									</div>
 								</div>
@@ -388,7 +386,7 @@
 										<i class="fa fa-thumbs-up fa-5x"></i>
 									</div>
 									<div class="col-xs-9 text-right">
-										<div class="huge">${sv.getMax_v()}</div>
+										<div class="huge">${sv.getMax_v()}m/s</div>
 
 									</div>
 								</div>
@@ -412,13 +410,14 @@
 											<i class="fa fa-user fa-5x"></i>
 										</div>
 										<%
-											for (int i = 0; i < 5; i++) {
+										if(request.getAttribute("sv") != null){
+											for (int i = 1; i <= Double.parseDouble(sv.getScore()); i++) {
 										%>
 										<div class="col-xs-2">
 											<i class="fa fa-star fa-5x"></i>
 										</div>
 										<%
-											}
+											}}
 										%>
 									</div>
 								</div>
@@ -437,22 +436,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<i class="fa fa-bar-chart-o fa-fw"></i> 동선
-						<div class="pull-right">
-							<div class="btn-group">
-								<button type="button"
-									class="btn btn-default btn-xs dropdown-toggle"
-									data-toggle="dropdown">
-									Actions <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu pull-right" role="menu">
-									<li><a href="#">일</a></li>
-									<li><a href="#">월</a></li>
-									<li><a href="#">년</a></li>
-									<li class="divider"></li>
-									<li><a href="#">?</a></li>
-								</ul>
-							</div>
-						</div>
+						
 					</div>
 				</div>
 				<img class="col-lg-12" src="resources/img/s1.jpg">
@@ -463,28 +447,13 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<i class="fa fa-bar-chart-o fa-fw"></i> 시간별 속도-넘어짐 데이터
-							<div class="pull-right">
-								<div class="btn-group">
-									<button type="button"
-										class="btn btn-default btn-xs dropdown-toggle"
-										data-toggle="dropdown">
-										Actions <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu pull-right" role="menu">
-										<li><a href="#">일</a></li>
-										<li><a href="#">월</a></li>
-										<li><a href="#">년</a></li>
-										<li class="divider"></li>
-										<li><a href="#">?</a></li>
-									</ul>
-								</div>
-							</div>
+							
 						</div>
 					</div>
 					<div class="panel-body">
 						<div id="linechart_material"></div>
 					</div>
-					<a onclick="rank()" style="cursor:pointer">
+					<a href="rank?location=<%=sv.getLocation() %>">
 					<div class="col-lg-12" style="margin-top:20px">
 						<div class="panel panel-yellow">
 							<div class="panel-heading">
@@ -493,7 +462,7 @@
 										<i class="fa fa-trophy fa-5x"></i>
 									</div>
 									<div class="col-xs-9 text-right">
-										<div class="huge"></div>
+										<div class="huge"><%if(myrank!=0){%><%=myrank %>위 <%} %></div>
 
 									</div>
 								</div>

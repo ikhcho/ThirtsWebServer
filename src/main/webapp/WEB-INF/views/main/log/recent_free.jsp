@@ -268,7 +268,6 @@
 										}
 									%></a></li>
 						</ul>
-						<img class="nav" src="resources/img/logo_side.png">
 					</div>
 					<!-- /.sidebar-collapse -->
 				</div>
@@ -304,28 +303,12 @@
 			</div>
 			<!-- /.row -->
 
-			<div class="col-lg-6 col-md-3">
+			<div class="col-lg-6">
 				<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<i class="fa fa-bar-chart-o fa-fw"></i> ${sv.getLocation()} 	 ${sv.getDate()}
-							<div class="pull-right">
-								<div class="btn-group">
-									<button type="button"
-										class="btn btn-default btn-xs dropdown-toggle"
-										data-toggle="dropdown">
-										Actions <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu pull-right" role="menu">
-										<li><a href="#">일</a></li>
-										<li><a href="#">월</a></li>
-										<li><a href="#">년</a></li>
-										<li class="divider"></li>
-										<li><a href="#">?</a></li>
-									</ul>
-								</div>
-							</div>
 						</div>
 					</div>
 					</div>
@@ -337,7 +320,7 @@
 										<i class="glyphicon glyphicon-time fa-5x"></i>
 									</div>
 									<div class="col-xs-9 text-right">
-										<div class="huge">${sv.getTime()}</div>
+										<div class="huge">${sv.getTime()}초</div>
 
 									</div>
 								</div>
@@ -359,7 +342,7 @@
 										<i class="fa fa-road fa-5x"></i>
 									</div>
 									<div class="col-xs-9 text-right">
-										<div class="huge">${sv.getDistance()}</div>
+										<div class="huge">${sv.getDistance()}M</div>
 									</div>
 								</div>
 							</div>
@@ -382,7 +365,7 @@
 										<i class="fa fa-dashboard fa-5x"></i>
 									</div>
 									<div class="col-xs-9 text-right">
-										<div class="huge">${sv.getAverage_v()}</div>
+										<div class="huge">${sv.getAverage_v()}m/s</div>
 
 									</div>
 								</div>
@@ -405,7 +388,7 @@
 										<i class="fa fa-thumbs-up fa-5x"></i>
 									</div>
 									<div class="col-xs-9 text-right">
-										<div class="huge">${sv.getMax_v()}</div>
+										<div class="huge">${sv.getMax_v()}m/s</div>
 
 									</div>
 								</div>
@@ -429,13 +412,14 @@
 											<i class="fa fa-user fa-5x"></i>
 										</div>
 										<%
-											for (int i = 0; i < 5; i++) {
+											if(request.getAttribute("sv") != null){
+											for (int i = 1; i <= Double.parseDouble(sv.getScore()); i++) {
 										%>
 										<div class="col-xs-2">
 											<i class="fa fa-star fa-5x"></i>
 										</div>
 										<%
-											}
+											}}
 										%>
 									</div>
 								</div>
@@ -454,22 +438,7 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<i class="fa fa-bar-chart-o fa-fw"></i> 동선
-					<div class="pull-right">
-						<div class="btn-group">
-							<button type="button"
-								class="btn btn-default btn-xs dropdown-toggle"
-								data-toggle="dropdown">
-								Actions <span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu pull-right" role="menu">
-								<li><a href="#">일</a></li>
-								<li><a href="#">월</a></li>
-								<li><a href="#">년</a></li>
-								<li class="divider"></li>
-								<li><a href="#">?</a></li>
-							</ul>
-						</div>
-					</div>
+					
 				</div>
 			</div>
 			</div>
@@ -481,22 +450,7 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<i class="fa fa-bar-chart-o fa-fw"></i> 시간별 속도-자세 데이터
-							<div class="pull-right">
-								<div class="btn-group">
-									<button type="button"
-										class="btn btn-default btn-xs dropdown-toggle"
-										data-toggle="dropdown">
-										Actions <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu pull-right" role="menu">
-										<li><a href="#">일</a></li>
-										<li><a href="#">월</a></li>
-										<li><a href="#">년</a></li>
-										<li class="divider"></li>
-										<li><a href="#">?</a></li>
-									</ul>
-								</div>
-							</div>
+							
 						</div>
 					</div>
 					<div class="panel-body">

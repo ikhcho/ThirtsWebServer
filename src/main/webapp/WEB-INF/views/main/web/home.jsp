@@ -179,7 +179,8 @@
 										}
 									%></a></li>
 						</ul>
-						<img class="nav" src="resources/img/logo_side.png">
+						
+						
 					</div>
 					<!-- /.sidebar-collapse -->
 				</div>
@@ -212,7 +213,7 @@
 			</div>
 			<!-- /.row -->
 			<div class="row">
-				<div class="col-lg-9">
+				<div class="col-lg-12">
                     <div class="panel panel-success">
                         <div class="panel-heading">
                            	IoT 스노보드 알아보기
@@ -237,49 +238,83 @@
                             <div class="tab-content">
                             	<div class="tab-pane fade in active" id="description">
                                     <h4>THIRTS</h4>
-                                    <img class="col-lg-6" src="resources/img/main.jpg">
+                                    <div class="col-lg-7">
+                                    <iframe width="854" height="480" src="https://www.youtube.com/embed/d6VVg4GcATs" frameborder="0" allowfullscreen></iframe>
+                                    </div>
                                     	<div class="panel-body">
-                                    	<ul class="nav">
-                                    		<li><p>사물 인터넷(Internet of Things, 약어로 IoT)은 각종 사물에 센서와 통신  기능을 내장하여 인터넷에 연결하는 기술을 의미한다.</p></li>
-                                    		<li><p>‘스노보드’라는 스포츠에 IT기술을 접목시킨 솔루션으로 보드 및 기타 장비에  센서와 게이트웨이를 부착하여 밸런스 및 속도를 측정하는 솔루션</p></li>
-                                    		<li><p>MPXV7002DP(공기압센서), MPU-9250(9축 모션센서), FSR-406(압력센서)를 이용하여 사용자의 정보를 센싱한다.</p></li>
-											<li><p>설계된 알고리즘에 따라 사용자에게 오디오 음성 및 LED 불빛을 이용해 자세를 컨설팅한다.</p></li>
-											<li><p>수집된 센서 데이터는 회원별로 데이터베이스에 누적되며, 웹 및 안드로이드 어플리케이션을 통해 개인 로그 정보를 확인할 수 있다.</p></li>
+                                    	<ul>
+                                    		<li><p>사물 인터넷(Internet of Things, 약어로 IoT)은 각종 사물에 센서와 통신  기능을 내장하여 인터넷에 연결하는 기술을 의미합니다.</p></li>
+                                    		<li><p>‘스노보드’라는 스포츠에 IT기술을 접목시킨 솔루션으로 보드 및 기타 장비에  센서와 게이트웨이를 부착하여 밸런스 및 속도를 측정하는 솔루션입니다.</p></li>
+                                    		<li><p>센서를 통해 속도, 모션, 압력, 위치정보를 수집합니다.</p></li>
+											<li><p>실시간으로 자세를 분석하여 실력 향상을 위한 음성 컨설팅 서비스를 제공합니다. </p></li>
+											<li><p>웹 브라우저 및 안드로이드 어플리케이션을 통해 개인 기록을 확인할 수 있습니다.</p></li>
 										 </ul>
 										 </div>
                                 </div>
                                 <div class="tab-pane fade" id="free">
-                                    <h4>Free Mode</h4>
+                                    <h4>Free Mode란?
+                                    </h4>
                                 	<ul>
-                                    	<li><p>기본 모드로, 속도 알람, 자세 측정, 위치 측정을 수행</p></li>
-                                    	<li><p>속도가 Max 이상일 시 음성 알람</p></li>
-                                    	<li><p>자세측정 : 1초에 1번씩 Fall-down 확인, Fall-down 발생시 Alarm</p></li>
-									</ul>    
+                                    	<li><p>자유로운 슬로프 이용을 위한 기본 모드입니다.</p></li>
+                                    	<li><p>슬로프를 이용하는 동안의 속도, 자세, 위치 정보를 수집합니다.</p></li>
+									</ul>   
+									
+									<br/><h4>특징
+                                    </h4>
+                                	<ul>
+                                    	<li><p>과속 방지를 위하여 속도가 10m/s 이상일 경우 감속하라는 알람 메시지가 실행됩니다.</p></li>
+                                    	<li><p>사용자가 넘어질 경우 넘어지기 직전 3초간의 데이터를 분석하여 자세의 문제점을 지적해 줍니다.</p></li>
+                                    	<li><p>속도, 자세, 넘어진 횟수를 통해 0.0~5.0 까지 평점이 책정됩니다.</p></li>
+									</ul>  
+									 
                                 </div>
                                 <div class="tab-pane fade" id="pendulum">
-                                    <h4>Pendulum Mode</h4>
+                                    <h4>Pendulum Mode란?
+                                    </h4>
+                                    <ul>
+                                    	<li><p>보드의 기본 동작인 Pendulum 동작을 위한 교육용 모드입니다.</p></li>
+                                    	<li><p>사용자의 Pendulum 동작을 분석하여 자세의 문제점을 컨설팅합니다.</p></li>
+									</ul>   
+									
+									<br/><h4>특징
+                                    </h4>
                                 	<ul>
-                                    	<li><p>보드 동작 중 가장 기본이 되는 “Pendulum“동작을 수행하기 위한 모드, 초보자용 모드이다.</p></li>
-                                    	<li><p>현 모드에서 속도 알람은 사용되지 않는다.</p></li>
-                                    	<li><p>사용자가 Riding 중 5초에 1번씩 자세를 판별한다.</p></li>
-									</ul>    
+                                    	<li><p>Pendulum이라는 특정 동작을 수행해야 정확한 컨설팅이 가능합니다.</p></li>
+                                    	<li><p>5초마다 동작을 분석하여 자세에 문제점이 있을 경우 문제점을 지적해줍니다.</p></li>
+                                    	<li><p>슬로프의 동선과 함께 시간별(1초) 데이터를 확인할 수 있습니다.</p></li>
+									</ul>  
                                 </div>
                                 <div class="tab-pane fade" id="turn">
-                                    <h4>Turn Mode</h4>
+                                	<h4>Turn Mode란?
+                                    </h4>
+                                    <ul>
+                                    	<li><p>보드의 고급 동작인 Turn 동작을 위한 교육용 모드입니다.</p></li>
+                                    	<li><p>사용자의 Turn 동작을 분석하여 자세의 문제점을 컨설팅합니다.</p></li>
+									</ul>   
+									
+									<br/><h4>특징
+                                    </h4>
                                 	<ul>
-                                    	<li><p>보드 동작 중 하나인 Turn 동작을 분석하기 위한 모드, 중급자 이상의 사용자 모드</p></li>
-                                    	<li><p>본 모드의 사용 권장 시간은 30초이내로, 1번의 Turn 동작을 분석하기 위해 사용된다. 따라서, 사용자는 시작과 함께 1번의 Turn 동작을 수행 후 종료 버튼을 눌러 즉각적으로 자세를 컨설팅 받는다.</p></li>
-                                    	<li><p>0.2초 주기로 기울기와 압력값을 기록한다.</p></li>
-                                    	<li><p>사용자가 종료 버튼을 누르면 기록된 데이터를 분석하여 Alarm을 준다.</p></li>
-									</ul>    
+                                    	<li><p>사용자는 시작 후 1분내에 1번의 Turn동작을 수행하고 사용을 종료해야 합니다.</p></li>
+                                    	<li><p>매우 짧은 주기로 자세를 측정하며 1회의 Turn동작 수행 후, 종료와 함께 자세를 분석하여 문제점을 지적해줍니다.</p></li>
+                                    	<li><p>슬로프의 동선과 함께 시간별(0.2초) 데이터를 확인할 수 있습니다.</p></li>
+									</ul>         
                                 </div>
                                 <div class="tab-pane fade" id="record">
-                                    <h4>Record Mode</h4>
+                                	<h4>Record Mode란?
+                                    </h4>
+                                    <ul>
+                                    	<li><p>실시간 컨설팅 서비스 없이 기록 갱신을 위한 모드입니다.</p></li>
+                                    	<li><p>슬로프를 이용하는 동안의 속도, 자세, 위치 정보를 수집하며 다른 유저와 기록을 비교하여 랭킹을 메깁니다.</p></li>
+									</ul>   
+									
+									<br/><h4>특징
+                                    </h4>
                                 	<ul>
-                                    	<li><p>랭킹 시스템을 위한 기록 모드, Alarm 없이 구간 내 데이터를 기록</p></li>
-                                    	<li><p>사용 구간 내 최고속도, 평균속도, 시간, 넘어진 횟수를 고려하여 평점을 매긴다.</p></li>
-                                    	<li><p>본 모드로 저장된 평점을 비교하여 사용자간의 랭킹을 나눈다.</p></li>
-									</ul>        
+                                    	<li><p>타 사용자들과 비교하여 실력을 평가하고 순위가 메겨진다.</p></li>
+                                    	<li><p>속도 알람 및 실시간 음성 컨설팅을 지원하지 않는다.</p></li>
+                                    	<li><p>슬로프별로 최고속도, 평균속도, 평점 3가지 항목으로 순위가 메겨진다.</p></li>
+									</ul>         
                                 </div>
                             </div>
                         </div>
@@ -287,114 +322,7 @@
                     </div>
                     <!-- /.panel -->
                 </div>
-                <div class="col-lg-3">
-                <a onclick="recent()" style="cursor:pointer">
-						<div class="panel panel-primary">
-							<div class="panel-heading">
-								<div class="row">
-									<div class="col-xs-3">
-										<i class="fa fa-bar-chart-o fa-5x"></i>
-									</div>
-									<div class="col-xs-9 text-right">
-										<h1><c:choose>
-										 <c:when test="${mainvo.getLocation() eq null}">
-											0
-										</c:when>
-										<c:otherwise>
-									        	${mainvo.getLocation()}
-									    </c:otherwise>
-										</c:choose></h1>
-									</div>
-								</div>
-							</div>
-								<div class="panel-footer">
-									<span class="pull-left">최근기록</span> <span class="pull-right"><i
-										class="fa fa-arrow-circle-right"></i></span>
-									<div class="clearfix"></div>
-								</div>
-						</div>
-				</a>
-				<!-- 전체기록 -->
-				<a onclick="all_list()" style="cursor:pointer">
-					<div class="panel panel-green">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-th-list fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<h1>${mainvo.getCount()}</h1>
-								</div>
-							</div>
-						</div>
-							<div class="panel-footer">
-							
-								<span class="pull-left">전체기록</span><span class="pull-right">
-								<i class="fa fa-arrow-circle-right"></i></span>
-								<div class="clearfix"></div>
-							</div>			
-					</div>
-				</a>
-				<a onclick="rank()" style="cursor:pointer">
-					<div class="panel panel-yellow">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-trophy fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge"></div>
-								</div>
-							</div>
-						</div>
-							<div class="panel-footer">
-								<span class="pull-left">랭킹보기</span> <span class="pull-right"><i
-									class="fa fa-arrow-circle-right"></i></span>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-				</a>
-				<a onclick="community()" style="cursor:pointer">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-users fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<h1>${mainvo.getMember()}</h1>
-								</div>
-							</div>
-						</div>
-							<div class="panel-footer">
-								<span class="pull-left">커뮤니티</span> <span class="pull-right"><i
-									class="fa fa-arrow-circle-right"></i></span>
-								<div class="clearfix"></div>
-							</div>
-					</div>
-				</a>
-				<%if (session.getAttribute("Smac") == null && session.getAttribute("Sname") != null) {%>
-				<a onclick="device()" style="cursor:pointer">
-					<div class="panel panel-red">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-gear fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<h4>등록된 장비가 없습니다.</h4>
-								</div>
-							</div>
-						</div>
-							<div class="panel-footer">
-								<span class="pull-left">장비등록</span> <span class="pull-right"><i
-									class="fa fa-arrow-circle-right"></i></span>
-								<div class="clearfix"></div>
-							</div>
-					</div>
-				</a>
-				<%}%>
-			</div>
+                
 			</div>
 		</div>
 	</div>

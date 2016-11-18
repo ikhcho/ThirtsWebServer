@@ -6,8 +6,6 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.thirts.main.MainVo;
-
 
 @Service("loginService")
 public class LoginService {

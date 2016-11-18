@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
 <%@ page import="com.thirts.account.LoginVo" %>
-
+<%@ page import="com.thirts.sha.SHA_ENC" %>
 <!DOCTYPE html>
 <html lang="en">
 <%
@@ -187,7 +187,7 @@
 										}
 									%></a></li>
 						</ul>
-						<img class="nav" src="resources/img/logo_side.png">
+						
 					</div>
 					<!-- /.sidebar-collapse -->
 				</div>

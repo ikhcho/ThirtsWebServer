@@ -25,7 +25,9 @@ import com.thirts.main.MainService;
 import com.thirts.main.MainVo;
 import com.thirts.pi.PiService;
 import com.thirts.pi.PiVo;
-
+import com.thirts.rank.RankService;
+import com.thirts.rank.RankVo;
+import com.thirts.sha.SHA_ENC;
 
 @Controller
 public class HomeController {
@@ -45,6 +47,10 @@ public class HomeController {
 	@Autowired
 	@Qualifier("piService")
 	PiService pService;
+	
+	@Autowired
+	@Qualifier("rankService")
+	RankService rService;
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
@@ -67,10 +73,11 @@ public class HomeController {
 	public ModelAndView selectId(LoginVo vo) {
 
 		ModelAndView mv = new ModelAndView();
-		LoginVo checkaccount = lService.SearchAccount(vo.getId());
+		SHA_ENC enc = new SHA_ENC();
+		LoginVo checkaccount = lService.SearchAccount(enc.SHA256_Encrypt(vo.getId()));
 
 		if (checkaccount != null && vo.getId() != "") {
-			if (vo.getId().equals(checkaccount.getId()) && vo.getPassword().equals(checkaccount.getPassword())) {
+			if (enc.SHA256_Encrypt(vo.getId()).equals(checkaccount.getId()) && enc.SHA256_Encrypt(vo.getPassword()).equals(checkaccount.getPassword())) {
 				mv.setViewName("login/login_check");
 				mv.addObject("vo", checkaccount);
 				return mv;
@@ -98,15 +105,19 @@ public class HomeController {
 	public ModelAndView insertAccount(LoginVo vo) {
 
 		ModelAndView mv = new ModelAndView();
+		SHA_ENC enc = new SHA_ENC();
+		
 		if(vo.getId() != "")
 		{
 			if (vo.getPassword().equals(vo.getPassword_check())) {
-				LoginVo checkaccount = lService.SearchAccount(vo.getId());
+				LoginVo checkaccount = lService.SearchAccount(enc.SHA256_Encrypt(vo.getId()));
 				
 				if (checkaccount != null && vo.getId() != "") {
 					mv.setViewName("login/duplication");
 					return mv;
 				}
+				vo.setId(enc.SHA256_Encrypt(vo.getId()));
+				vo.setPassword(enc.SHA256_Encrypt(vo.getPassword()));
 				lService.SaveAccount(vo);
 				mv.setViewName("login/login");
 				return mv;
@@ -186,12 +197,14 @@ public class HomeController {
 		
 		@RequestMapping(value = "/m_login_check", method = RequestMethod.POST)
 		public ModelAndView m_selectId(LoginVo vo) {
-
+			
 			ModelAndView mv = new ModelAndView();
-			LoginVo checkaccount = lService.SearchAccount(vo.getId());
+			SHA_ENC enc = new SHA_ENC();
+			
+			LoginVo checkaccount = lService.SearchAccount(enc.SHA256_Encrypt(vo.getId()));
 
 			if (checkaccount != null && vo.getId() != "") {
-				if (vo.getId().equals(checkaccount.getId()) && vo.getPassword().equals(checkaccount.getPassword())) {
+				if (enc.SHA256_Encrypt(vo.getId()).equals(checkaccount.getId()) && enc.SHA256_Encrypt(vo.getPassword()).equals(checkaccount.getPassword())) {
 					mv.setViewName("main/android/m_login_check");
 					mv.addObject("vo", checkaccount);
 					return mv;
@@ -213,6 +226,7 @@ public class HomeController {
 		public ModelAndView m_insertAccount(LoginVo vo) {
 
 			ModelAndView mv = new ModelAndView();
+			SHA_ENC enc = new SHA_ENC();
 			if(vo.getId() != "")
 			{
 				if (vo.getPassword().equals(vo.getPassword_check())) {
@@ -222,6 +236,8 @@ public class HomeController {
 						mv.setViewName("login/duplication");
 						return mv;
 					}
+					vo.setId(enc.SHA256_Encrypt(vo.getId()));
+					vo.setPassword(enc.SHA256_Encrypt(vo.getPassword()));
 					lService.SaveAccount(vo);
 					mv.setViewName("main/android/m_login");
 					return mv;
@@ -236,6 +252,7 @@ public class HomeController {
 		
 		//=========================================================//
 		
+		
 		//=======================web===============================//
 		
 		@RequestMapping(value = "/home")
@@ -248,22 +265,7 @@ public class HomeController {
 		
 			ModelAndView mv = new ModelAndView();
 			
-			MainVo member = mService.SearchCount();
 			
-			List<MainVo> LMV = mService.selectAllList(vo.getId());
-			int size = LMV.size();
-			
-			if(LMV.toString().equals("[null]") || size == 0)
-			{
-				mv.addObject("mainvo", member);	
-			}
-			else
-			{
-				MainVo mainvo = LMV.get(size-1);
-				mainvo.setCount(size);
-				mainvo.setMember(member.getMember());
-				mv.addObject("mainvo", mainvo);
-			}
 			mv.setViewName("main/web/home");
 			return mv;
 			
@@ -274,6 +276,19 @@ public class HomeController {
 		
 			ModelAndView mv = new ModelAndView();
 			
+			mv.setViewName("main/web/rank");
+			return mv;
+		}
+		
+		@RequestMapping(value = "/rank", method = RequestMethod.GET)
+		public ModelAndView rank_get(@RequestParam(value = "location") String location,@RequestParam(value = "type", required = false, defaultValue = "max") String type) {
+			ModelAndView mv = new ModelAndView();
+			List<RankVo> LRVM = rService.searchRank_m("THIRTS 리조트");
+			List<RankVo> LRVA = rService.searchRank_a("THIRTS 리조트");
+			List<RankVo> LRVS = rService.searchRank_s("THIRTS 리조트");
+			mv.addObject("lrvm",LRVM);
+			mv.addObject("lrva",LRVA);
+			mv.addObject("lrvs",LRVS);
 			mv.setViewName("main/web/rank");
 			return mv;
 			
@@ -290,9 +305,28 @@ public class HomeController {
 		}
 		@RequestMapping(value = "/profile", method = RequestMethod.POST)
 		public ModelAndView profile(LoginVo vo) {
-		
+
 			ModelAndView mv = new ModelAndView();
 			
+			MainVo member = mService.SearchCount();
+			List<MainVo> LMV = mService.selectAllList(vo.getId());
+			int size = LMV.size();
+			if(LMV.toString().equals("[null]") || size == 0)
+			{
+				mv.addObject("mainvo", member);	
+			}
+			else
+			{
+				MainVo mainvo = LMV.get(size-1);
+				mainvo.setCount(size);
+				mainvo.setMember(member.getMember());
+				mv.addObject("mainvo", mainvo);
+				
+				List<RankVo> LRV = rService.searchRank_s("THIRTS 리조트");
+				mv.addObject("lrv", LRV);
+			}
+			
+
 			mv.setViewName("main/web/profile");
 			return mv;
 			
@@ -311,17 +345,10 @@ public class HomeController {
 		public ModelAndView device(LoginVo vo) {
 		
 			ModelAndView mv = new ModelAndView();
-			LoginVo check = lService.SearchAccount(vo.getId());
-			if(check.getMacaddress() == null)
-			{
-				lService.SaveDevice(vo);
-				mv.addObject("vo", vo);
-			}
-			else
-			{
-				lService.UpdateDevice(vo);
-				mv.addObject("vo", vo);
-			}
+
+			lService.SaveDevice(vo);
+			mv.addObject("vo", vo);
+
 			mv.setViewName("main/web/device");
 			return mv;
 			
@@ -338,12 +365,16 @@ public class HomeController {
 			mv.addObject("sv", sv);
 			mv.setViewName("main/log/recent_free");
 			return mv;
+			
+			
 		}
 		
 		@RequestMapping(value = "/recent_pendulum", method = RequestMethod.POST)
 		public ModelAndView recent_p(LoginVo vo) {
 			ModelAndView mv = new ModelAndView();
 			SpeedVo sv = sService.SearchSpeed_p(vo.getId());
+			List<PiVo> LPV = pService.selectAllBeacon();
+			mv.addObject("lpv", LPV);
 			mv.addObject("sv", sv);
 			mv.setViewName("main/log/recent_pendulum");
 			return mv;
@@ -353,6 +384,8 @@ public class HomeController {
 		public ModelAndView recent_t(LoginVo vo) {
 			ModelAndView mv = new ModelAndView();
 			SpeedVo sv = sService.SearchSpeed_t(vo.getId());
+			List<PiVo> LPV = pService.selectAllBeacon();
+			mv.addObject("lpv", LPV);
 			mv.addObject("sv", sv);
 			mv.setViewName("main/log/recent_turn");
 			return mv;
@@ -362,6 +395,11 @@ public class HomeController {
 		public ModelAndView recent_r(LoginVo vo) {
 			ModelAndView mv = new ModelAndView();
 			SpeedVo sv = sService.SearchSpeed_r(vo.getId());
+			if(sv != null)
+			{
+				List<RankVo> LRV = rService.searchRank_s(sv.getLocation());
+				mv.addObject("lrv", LRV);
+			}
 			mv.addObject("sv", sv);
 			mv.setViewName("main/log/recent_record");
 			return mv;
@@ -418,43 +456,67 @@ public class HomeController {
 		//==========================================================//
 	
 		//========================db=================================//
-		public static String CalibrationScore(String mode, int max_v, int distance, int time, String count)
+		public static String CalibrationScore(String mode, int max_v, int distance, int time, String gyro, int count)
 		{
-			if(mode.equals("F"))
+			System.out.println("Free mode Score test");
+			double score=0;
+			if(time >=10)
 			{
-				System.out.print("Free mode Score test");
-				System.out.print(max_v);
-				System.out.print(distance);
-				System.out.print(time);
-				System.out.println(count);
+				if(max_v>=10)
+				{
+					score += 30;
+				}
+				else if(max_v>=20)
+				{
+					score += 20;
+				}
+				else if(max_v>=10)
+				{
+					score += 10;
+				}
+				
+				// E_percent //
+				String[] tmp = gyro.split(",");
+				   int E_percent=0;
+				   for(int i=0; i<tmp.length; i++)
+				   {
+				   	if(tmp[i].equals("E") || tmp[i].equals("B"))
+				   	{
+				   		E_percent++;	
+				   	}
+				   }
+				 E_percent = E_percent*100/(tmp.length-1);
+			   if(E_percent >= 80)
+			    {
+			    	score += 100;
+			    }
+			    else if(E_percent >= 60)
+			    {
+			    	score += 80;
+			    }
+			    else if(E_percent >= 40)
+			    {
+			    	score += 60;
+			    }
+			    else 
+			    	score += 40;
+			    
+			    score -= count*10;
+			    if(score>100)
+			    {
+			    	return "5";
+			    }
+			    else
+			    {
+			    	return String.valueOf(score/20);
+			    }
 			}
-			else if(mode.equals("P"))
+			else
 			{
-				System.out.print("Pendulum mode Score test");
-				System.out.print(max_v);
-				System.out.print(distance);
-				System.out.print(time);
-				System.out.println(count);
+				return "X";
 			}
-			else if(mode.equals("T"))
-			{
-				System.out.print("Turn mode Score test");
-				System.out.print(max_v);
-				System.out.print(distance);
-				System.out.print(time);
-				System.out.println(count);
-			}
-			else if(mode.equals("R"))
-			{
-				System.out.print("Record mode Score test");
-				System.out.print(max_v);
-				System.out.print(distance);
-				System.out.print(time);
-				System.out.println(count);
-			}
-			String score="4";
-			return score;
 		}
+		
 		
 		@RequestMapping(value = "/db/receivedata", method = RequestMethod.GET)
 		public String receivedata(@RequestParam(value = "mode", required = false, defaultValue = "1") String mode,
@@ -473,15 +535,21 @@ public class HomeController {
 			Date d = new Date();
 			String date = d.toString();
 			
-			String cal_score = CalibrationScore(mode,max_v,distance,time,count);
-			
 			SpeedVo vo = new SpeedVo();
 			vo.setMode(mode);
 			vo.setMax_v(max_v);
 			vo.setAverage_v(average_v);
 			vo.setDistance(distance);
 			vo.setTime(time);
-			vo.setScore(cal_score);
+			if(mode == "F" || mode == "R")
+			{
+				String cal_score = CalibrationScore(mode,max_v,distance,time,gyro,Integer.parseInt(count));
+				vo.setScore(cal_score);
+			}
+			else
+			{
+				vo.setScore("X");
+			}
 			vo.setCount(count);
 			vo.setFalldown(falldown);
 			vo.setSpeed(speed);
@@ -489,7 +557,7 @@ public class HomeController {
 			vo.setBeacon(beacon);
 			if(location.equals("thirts"))
 			{
-				vo.setLocation("THIRTS 리조트");
+				vo.setLocation("THIRTS 슬로프");
 			}
 			vo.setMacaddress(macaddress);
 			vo.setDate(date);

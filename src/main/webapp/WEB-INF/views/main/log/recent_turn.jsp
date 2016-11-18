@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.thirts.speed.SpeedVo"%>
 <%@ page import="com.thirts.speed.SpeedService"%>
+<%@ page import="com.thirts.pi.PiVo"%>
+<%@ page import="com.thirts.pi.PiService"%>
+<%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,7 +57,18 @@
 			}
 		}
 	}
-		
+	List<PiVo> LPV = (List<PiVo>)request.getAttribute("lpv");
+	int t_size = LPV.size();
+	
+	String[] axis = new String[0];
+	
+	PiVo pv = new PiVo();
+	pv = LPV.get(t_size-1);
+	axis = pv.getAxis().split(",");
+	
+	int size_axis = axis.length;
+	
+
 
 %>
 
@@ -204,54 +218,40 @@
 
 	}
 </script>
-
 <script type="text/javascript">
 google.charts.setOnLoadCallback(drawChart);
-	function drawChart() {
-		
-		var data = new google.visualization.DataTable();
-        data.addColumn('number', 'x축');
-        data.addColumn('number', 'y축');
-        
-        for (var i = 1; i <=5; i++) {
-			data.addRows([[ 150+(i*20), 600-(i*5)] ]);
-		}
-        for (var i = 1; i <=3; i++) {
-			data.addRows([[ 250+(i*10), 575-(i*5)] ]);
-		}
-        for (var i = 1; i <=3; i++) {
-			data.addRows([[ 280-(i*10), 560-(i*5)] ]);
-		}
-        for (var i = 1; i <=5; i++) {
-			data.addRows([[ 250-(i*20), 545-(i*6)] ]);
-		}
-        for (var i = 1; i <=3; i++) {
-			data.addRows([[ 150-(i*10), 515-(i*5)] ]);
-		}
-        for (var i = 1; i <=10; i++) {
-			data.addRows([[ 120+(i*25), 485-(i*4)] ]);
-		}
-        data.addRows([[ 375, 440] ]);
-        data.addRows([[ 378, 435] ]);
-        data.addRows([[ 375, 435] ]);
-        for (var i = 1; i <=10; i++) {
-			data.addRows([[ 375-(i*20), 435-(i*5)] ]);
-		}
-        
-		var options = {
-				  hAxis: {minValue: 0, maxValue: 500, gridlines:{color:'none'}},
-		          vAxis: {minValue: 0, maxValue: 500, gridlines:{color:'none'}},
-		          colors: ['red'],
-		          pointSize: 12,
-		          legend: 'none',
-		          backgroundColor : 'none'
-		        };
+function drawChart() {
+	
+	var axisArr = new Array();
+	<%for (int j = 2; j <size_axis; j++) {%>
+	axisArr[<%=j-2%>] = <%=axis[j]%>;
+	<%}%>
+	
+	var data = new google.visualization.DataTable();
+    data.addColumn('number');
+    data.addColumn('number');
+    
+    for (var i = 0; i < <%=size_axis%>; i++) {
+		data.addRows([[-(i*i*i), axisArr[i]] ]);
+	}
 
-		var chart = new google.visualization.ScatterChart(document.getElementById('animatedshapes_div'));
+    var options = {
+			  hAxis: {minValue: 0, maxValue: 500, gridlines:{color:'none'}, textStyle:{color:'none'}, baselineColor:'none'},
+	          vAxis: {minValue: 0, maxValue: 40, gridlines:{color:'none'}, textStyle:{color:'none'}, baselineColor:'none'},
+	          colors: ['red'],
+	          pointSize: 4,
+	          legend: 'none',
+	          curveType: 'function',
+	          backgroundColor : 'none',
+	          orientation : 'vertical'
+	        };
+
+    var chart = new google.visualization.LineChart(document.getElementById('curve_chart1'));
 
 
-	      chart.draw(data, options);
-		      }
+      chart.draw(data, options);
+	      }
+
 
 	
 </script>
@@ -336,7 +336,6 @@ google.charts.setOnLoadCallback(drawChart);
 										}
 									%></a></li>
 						</ul>
-						<img class="nav" src="resources/img/logo_side.png">
 					</div>
 					<!-- /.sidebar-collapse -->
 				</div>
@@ -373,57 +372,29 @@ google.charts.setOnLoadCallback(drawChart);
 
 			<div class="col-lg-12">
 				<div class="row">
-					<div class="col-lg-12">
+					<div class="col-lg-6">
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<i class="fa fa-bar-chart-o fa-fw"></i> ${sv.getLocation()} 	 ${sv.getDate()}
-								<div class="pull-right">
-									<div class="btn-group">
-										<button type="button"
-											class="btn btn-default btn-xs dropdown-toggle"
-											data-toggle="dropdown">
-											Actions <span class="caret"></span>
-										</button>
-										<ul class="dropdown-menu pull-right" role="menu">
-											<li><a href="#">일</a></li>
-											<li><a href="#">월</a></li>
-											<li><a href="#">년</a></li>
-											<li class="divider"></li>
-											<li><a href="#">?</a></li>
-										</ul>
-									</div>
-								</div>
+								
 							</div>
 						</div>
+					
+					<div class="col-lg-7">
+						<div id="animatedshapes_div" style="height: 600px;background-image: url('resources/img/m_slope.jpg');  background-size: contain;background-repeat: no-repeat;">
+						<div id="curve_chart1" style="height: 600px;"></div>
+						</div>
 					</div>
-					<div class="col-lg-6">
-						<div id="animatedshapes_div" style="height: 600px;background-image: url('resources/img/slope_detail.jpg');  background-size: contain;background-repeat: no-repeat;"></div>
-					</div>
-				
+				</div>
 			
-				<div class="col-lg-6" style="margin-top:20px">
+				<div class="col-lg-6">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<i class="fa fa-bar-chart-o fa-fw"></i> ${sv.getLocation()} 	 ${sv.getDate()}
-								<div class="pull-right">
-									<div class="btn-group">
-										<button type="button"
-											class="btn btn-default btn-xs dropdown-toggle"
-											data-toggle="dropdown">
-											Actions <span class="caret"></span>
-										</button>
-										<ul class="dropdown-menu pull-right" role="menu">
-											<li><a href="#">일</a></li>
-											<li><a href="#">월</a></li>
-											<li><a href="#">년</a></li>
-											<li class="divider"></li>
-											<li><a href="#">?</a></li>
-										</ul>
-									</div>
-								</div>
+								
 							</div>
 						</div>
-						<div id="linechart_material" style="height: 400px;"></div>
+						<div id="linechart_material" style="height: 500px;"></div>
 					</div>
 					</div>
 				</div>

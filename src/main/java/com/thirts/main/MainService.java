@@ -6,11 +6,6 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.thirts.account.LoginVo;
-import com.thirts.speed.SpeedVo;
-
-
-
 @Service("mainService")
 public class MainService {
 	@Resource(name="mainDao")

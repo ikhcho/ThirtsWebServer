@@ -1,9 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+	<%@ page import="com.thirts.rank.RankVo"%>
+<%@ page import="com.thirts.rank.RankService"%>
+<%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html lang="en">
 
+<%
+	int myrank=0;
+
+	
+	if(request.getAttribute("lrv") != null)
+	{
+			
+		List<RankVo> LRV = (List<RankVo>)request.getAttribute("lrv");
+		
+		for(int i=0; i <LRV.size(); i++)
+		{
+			if(session.getAttribute("Sid").equals(LRV.get(i).getId()))
+			{
+				myrank=i+1;
+					break;
+				
+			}
+		}
+	}
+
+
+%>
 <head>
 
 <meta charset="utf-8">
@@ -29,10 +54,6 @@
 
 <!-- Custom CSS -->
 <link href="resources/bootstrap/dist/css/sb-admin-2.css"
-	rel="stylesheet">
-
-<!-- Morris Charts CSS -->
-<link href="resources/bootstrap/bower_components/morrisjs/morris.css"
 	rel="stylesheet">
 
 <!-- Custom Fonts -->
@@ -178,7 +199,7 @@
 										}
 									%></a></li>
 						</ul>
-						<img class="nav" src="resources/img/logo_side.png">
+						
 					</div>
 					<!-- /.sidebar-collapse -->
 				</div>
@@ -200,7 +221,7 @@
 						<%
 							if (session.getAttribute("Sname") != null) {
 						%>
-						<%=session.getAttribute("Sname")%>님 IoT 스노보드 방문을 환영합니다.
+						<%=session.getAttribute("Sname")%>님 프로필
 					</h1>
 					<%
 						}
@@ -210,8 +231,124 @@
 				<!-- /.col-lg-12 -->
 			</div>
 			<!-- /.row -->
-			<h1>여기는 프로필 페이지입니다.
-			현재 개발중입니다.</h1>
+			<div class="row">
+				
+				<div class="col-lg-3">
+					<div class="panel panel-default">
+                        <div class="panel-heading">
+                           		프로필
+                           		 </div>
+                        <div class="panel-body">
+                        	<div style="height: 400px;background-image: url('resources/img/profile_default.jpg'); background-size: cover;background-repeat: no-repeat;"></div>
+                        </div>
+                        <div class="panel-footer">
+                        	프로필 수정
+                        </div>
+                    </div>
+				</div>
+				<div class="col-lg-1"></div>
+				<div class="col-lg-3">
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="col-xs-3">
+											<i class="fa fa-bar-chart-o fa-5x"></i>
+										</div>
+										<div class="col-xs-9 text-right">
+											<h1><c:choose>
+											 <c:when test="${mainvo.getLocation() eq null}">
+												0
+											</c:when>
+											<c:otherwise>
+										        	${mainvo.getLocation()}
+										    </c:otherwise>
+											</c:choose></h1>
+										</div>
+									</div>
+								</div>
+									<div class="panel-footer">
+										<span class="col-xs-12 text-center">최근이용 슬로프</span>
+										<div class="clearfix"></div>
+									</div>
+							</div>
+					<!-- 전체기록 -->
+					
+						<div class="panel panel-green">
+							<div class="panel-heading">
+								<div class="row">
+									<div class="col-xs-3">
+										<i class="fa fa-th-list fa-5x"></i>
+									</div>
+									<div class="col-xs-9 text-right">
+										<h1>${mainvo.getCount()}</h1>
+									</div>
+								</div>
+							</div>
+								<div class="panel-footer">
+								
+									<span class="col-xs-12 text-center">총 이용 횟수</span>
+									<div class="clearfix"></div>
+								</div>			
+						</div>
+					
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<div class="row">
+									<div class="col-xs-3">
+										<i class="fa fa-users fa-5x"></i>
+									</div>
+									<div class="col-xs-9 text-right">
+										<h1>${mainvo.getMember()}</h1>
+									</div>
+								</div>
+							</div>
+								<div class="panel-footer">
+									<span class="col-xs-12 text-center">가입자수</span> 
+									<div class="clearfix"></div>
+								</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+					
+						<div class="panel panel-red">
+						<a onclick="device()" style="cursor:pointer">
+							<div class="panel-heading">
+								<div class="row">
+									<div class="col-xs-3">
+										<i class="fa fa-gear fa-5x"></i>
+									</div>
+									<div class="col-xs-9 text-right">
+										<h1><%if (session.getAttribute("Smac") == null) {%>등록된 장비가 없습니다.<%}else{%><%=session.getAttribute("Smac") %><%} %></h1>
+									</div>
+								</div>
+							</div>
+							</a>
+								<div class="panel-footer">
+									<span class="col-xs-12 text-center"><%if (session.getAttribute("Smac") == null) {%>장비등록<%}else{%>장비변경<%} %></span>
+									<div class="clearfix"></div>
+								</div>
+								
+						</div>
+						<div class="panel panel-yellow">
+							<div class="panel-heading">
+								<div class="row">
+									<div class="col-xs-3">
+										<i class="fa fa-trophy fa-5x"></i>
+									</div>
+									<div class="col-xs-9 text-right">
+										<h1><%if(myrank!=0){%><%=myrank %>위 <%} %></h1>
+									</div>
+								</div>
+							</div>
+							
+								<div class="panel-footer">
+									<span class="col-xs-12 text-center">최고기록</span>
+									<div class="clearfix"></div>
+								</div>	
+							</div>
+					
+					</div>
+			</div>
 		</div>
 	</div>
 	</form>
@@ -222,17 +359,6 @@
 	<!-- Bootstrap Core JavaScript -->
 	<script
 		src="resources/bootstrap/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-	<!-- Metis Menu Plugin JavaScript -->
-	<script
-		src="resources/bootstrap/bower_components/metisMenu/dist/metisMenu.min.js"></script>
-
-	<!-- Morris Charts JavaScript -->
-	<script
-		src="resources/bootstrap/bower_components/raphael/raphael-min.js"></script>
-	<script
-		src="resources/bootstrap/bower_components/morrisjs/morris.min.js"></script>
-	<script src="resources/bootstrap/js/morris-data.js"></script>
 
 	<!-- Custom Theme JavaScript -->
 	<script src="resources/bootstrap/dist/js/sb-admin-2.js"></script>

@@ -47,6 +47,94 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+
+<style>
+.shape {
+    border-style: solid;
+    border-width: 0 90px 50px 0;
+    float: right;
+    height: 0px;
+    width: 0px;
+    -ms-transform: rotate(360deg); /* IE 9 */
+    -o-transform: rotate(360deg); /* Opera 10.5 */
+    -webkit-transform: rotate(360deg); /* Safari and Chrome */
+    transform: rotate(360deg);
+}
+.listing {
+    overflow: hidden;
+}
+.listing:hover {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: rotate scale(1.1);
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    -o-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+.shape {
+    border-color: rgba(255,255,255,0) #d9534f rgba(255,255,255,0) rgba(255,255,255,0);
+}
+.listing-radius {
+    border-radius: 7px;
+}
+.listing-danger {
+    border-color: #d9534f;
+}
+.listing-danger .shape {
+    border-color: transparent #d9533f transparent transparent;
+}
+.listing-success {
+    border-color: #5cb85c;
+}
+.listing-success .shape {
+    border-color: transparent #5cb75c transparent transparent;
+}
+.listing-default {
+    border-color: #999999;
+}
+.listing-default .shape {
+    border-color: transparent #999999 transparent transparent;
+}
+.listing-primary {
+    border-color: #428bca;
+}
+.listing-primary .shape {
+    border-color: transparent #318bca transparent transparent;
+}
+.listing-info {
+    border-color: #5bc0de;
+}
+.listing-info .shape {
+    border-color: transparent #5bc0de transparent transparent;
+}
+.listing-warning {
+    border-color: #f0ad4e;
+}
+.listing-warning .shape {
+    border-color: transparent #f0ad4e transparent transparent;
+}
+.shape-text {
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    position: relative;
+    right: -40px;
+    top: 2px;
+    white-space: nowrap;
+    -ms-transform: rotate(30deg); /* IE 9 */
+    -o-transform: rotate(360deg); /* Opera 10.5 */
+    -webkit-transform: rotate(30deg); /* Safari and Chrome */
+    transform: rotate(30deg);
+}
+.listing-content {
+    padding: 0 20px 10px;
+}
+
+</style>
+
 <script type="text/javascript">
 	function profile() {
 		var form = document.f;
@@ -178,7 +266,7 @@
 										}
 									%></a></li>
 						</ul>
-						<img class="nav" src="resources/img/logo_side.png">
+						
 					</div>
 					<!-- /.sidebar-collapse -->
 				</div>
@@ -200,7 +288,7 @@
 						<%
 							if (session.getAttribute("Sname") != null) {
 						%>
-						<%=session.getAttribute("Sname")%>님 IoT 스노보드 방문을 환영합니다.
+						<%=session.getAttribute("Sname")%>님 다양한 커뮤니티를 확인하세요.
 					</h1>
 					<%
 						}
@@ -210,9 +298,34 @@
 				<!-- /.col-lg-12 -->
 			</div>
 			<!-- /.row -->
-			<h1>여기는 커뮤니티 페이지입니다.
-			현재 개발중입니다.</h1>
+			<div class="row">
+				<div class="col-lg-offset-3">
+					<div class="col-lg-2">
+						<a href="https://www.youtube.com/">
+							<div class="listing " style="height: 200px;background-image: url('resources/img/youtube.jpg'); background-size: contain;background-repeat: no-repeat;"></div>
+						</a>
+					</div>
+					<div class="col-lg-2">
+						<a href="https://www.facebook.com/">
+							<div class="listing " style="height: 200px;background-image: url('resources/img/F_icon.svg.png'); background-size: contain;background-repeat: no-repeat;"></div>
+						</a>
+				     </div>
+				     
+				     <div class="col-lg-2">
+						<a href="http://section.cafe.naver.com/">
+							<div class="listing " style="height: 200px;background-image: url('resources/img/cafe.png'); background-size: contain;background-repeat: no-repeat;"></div>
+						</a>
+				     </div>
+				    
+				</div>
+			</div>
+			<div class="row">
+				
+				<iframe  frameborder="0" class="col-lg-12" src="http://section.cafe.naver.com/CafeSearch.nhn?query=%EC%8A%A4%EB%85%B8%EB%B3%B4%EB%93%9C#%7B%22query%22%3A%22%EC%8A%A4%EB%85%B8%EB%B3%B4%EB%93%9C%22%2C%22sortBy%22%3A0%2C%22themeDir1Ids%22%3A%5B%5D%2C%22themeDir2Ids%22%3A%5B%5D%2C%22areaDir1Ids%22%3A%5B%5D%2C%22areaDir2Ids%22%3A%5B%5D%2C%22ranking%22%3A%5B0%5D%2C%22age%22%3A%5B0%5D%2C%22gender%22%3A0%2C%22page%22%3A1%2C%22directoryOption%22%3Afalse%2C%22cafeType%22%3A%22all%22%7D" style="height:600px"></iframe>
+				
+			</div>
 		</div>
+		 
 	</div>
 	</form>
 	<!-- jQuery -->
@@ -236,6 +349,7 @@
 
 	<!-- Custom Theme JavaScript -->
 	<script src="resources/bootstrap/dist/js/sb-admin-2.js"></script>
+	
 </body>
 
 </html>
