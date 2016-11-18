@@ -48,92 +48,6 @@
     <![endif]-->
 
 
-<style>
-.shape {
-    border-style: solid;
-    border-width: 0 90px 50px 0;
-    float: right;
-    height: 0px;
-    width: 0px;
-    -ms-transform: rotate(360deg); /* IE 9 */
-    -o-transform: rotate(360deg); /* Opera 10.5 */
-    -webkit-transform: rotate(360deg); /* Safari and Chrome */
-    transform: rotate(360deg);
-}
-.listing {
-    overflow: hidden;
-}
-.listing:hover {
-    -webkit-transform: scale(1.1);
-    -moz-transform: scale(1.1);
-    -ms-transform: scale(1.1);
-    -o-transform: scale(1.1);
-    transform: rotate scale(1.1);
-    -webkit-transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    -o-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
-}
-.shape {
-    border-color: rgba(255,255,255,0) #d9534f rgba(255,255,255,0) rgba(255,255,255,0);
-}
-.listing-radius {
-    border-radius: 7px;
-}
-.listing-danger {
-    border-color: #d9534f;
-}
-.listing-danger .shape {
-    border-color: transparent #d9533f transparent transparent;
-}
-.listing-success {
-    border-color: #5cb85c;
-}
-.listing-success .shape {
-    border-color: transparent #5cb75c transparent transparent;
-}
-.listing-default {
-    border-color: #999999;
-}
-.listing-default .shape {
-    border-color: transparent #999999 transparent transparent;
-}
-.listing-primary {
-    border-color: #428bca;
-}
-.listing-primary .shape {
-    border-color: transparent #318bca transparent transparent;
-}
-.listing-info {
-    border-color: #5bc0de;
-}
-.listing-info .shape {
-    border-color: transparent #5bc0de transparent transparent;
-}
-.listing-warning {
-    border-color: #f0ad4e;
-}
-.listing-warning .shape {
-    border-color: transparent #f0ad4e transparent transparent;
-}
-.shape-text {
-    color: #fff;
-    font-size: 11px;
-    font-weight: bold;
-    position: relative;
-    right: -40px;
-    top: 2px;
-    white-space: nowrap;
-    -ms-transform: rotate(30deg); /* IE 9 */
-    -o-transform: rotate(360deg); /* Opera 10.5 */
-    -webkit-transform: rotate(30deg); /* Safari and Chrome */
-    transform: rotate(30deg);
-}
-.listing-content {
-    padding: 0 20px 10px;
-}
-
-</style>
 
 <script type="text/javascript">
 	function profile() {
@@ -291,30 +205,105 @@
 		<div id="page-wrapper">
 			
 			<div class="row">
-				<div class="col-lg-offset-3">
-					<div class="col-lg-2">
-						<a href="https://www.youtube.com/">
-							<div class="listing " style="height: 200px;background-image: url('resources/img/youtube.jpg'); background-size: contain;background-repeat: no-repeat;"></div>
-						</a>
-					</div>
-					<div class="col-lg-2">
-						<a href="https://www.facebook.com/">
-							<div class="listing " style="height: 200px;background-image: url('resources/img/F_icon.svg.png'); background-size: contain;background-repeat: no-repeat;"></div>
-						</a>
-				     </div>
-				     
-				     <div class="col-lg-2">
-						<a href="http://section.cafe.naver.com/">
-							<div class="listing " style="height: 200px;background-image: url('resources/img/cafe.png'); background-size: contain;background-repeat: no-repeat;"></div>
-						</a>
-				     </div>
-				    
-				</div>
+				<div class="col-lg-3">
+				
+					<div class="panel panel-green">
+                        <div class="panel-heading text-center">
+                           		<p>스노우 보드 강좌(휘스토리) - 초급 1. 사이드 슬리핑(Side Sliping)</p>
+                           		 </div>
+                        <div class="panel-body text-center">
+                        	<iframe src="https://www.youtube.com/embed/6GNb1dFXCuI" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+				
+					<div class="panel panel-green">
+                        <div class="panel-heading text-center">
+                           		<p>스노우 보드 강좌(휘스토리) - 초급 2. 팬듈럼(Pendulum)</p>
+                           		 </div>
+                        <div class="panel-body text-center">
+                        	<iframe src="https://www.youtube.com/embed/WqeN1AqJPrw" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+				
+					<div class="panel panel-green">
+                        <div class="panel-heading text-center">
+                           		<p>스노우 보드 강좌(휘스토리) - 초급 3. 트래버스(Traverse)</p>
+                           		 </div>
+                        <div class="panel-body text-center">
+                        	<iframe src="https://www.youtube.com/embed/3bjVpngF1a0" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+				 <div class="col-lg-3">
+				
+					<div class="panel panel-green">
+                        <div class="panel-heading text-center">
+                           		<p>스노우 보드 강좌(휘스토리) - 초급 4. 베이직 턴(Basic Turn)</p>
+                           		 </div>
+                        <div class="panel-body text-center">
+                        	<iframe src="https://www.youtube.com/embed/1XNgmFHouyM" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+				
 			</div>
 			<div class="row">
-				
-				<iframe  frameborder="0" class="col-lg-12" src="http://section.cafe.naver.com/CafeSearch.nhn?query=%EC%8A%A4%EB%85%B8%EB%B3%B4%EB%93%9C#%7B%22query%22%3A%22%EC%8A%A4%EB%85%B8%EB%B3%B4%EB%93%9C%22%2C%22sortBy%22%3A0%2C%22themeDir1Ids%22%3A%5B%5D%2C%22themeDir2Ids%22%3A%5B%5D%2C%22areaDir1Ids%22%3A%5B%5D%2C%22areaDir2Ids%22%3A%5B%5D%2C%22ranking%22%3A%5B0%5D%2C%22age%22%3A%5B0%5D%2C%22gender%22%3A0%2C%22page%22%3A1%2C%22directoryOption%22%3Afalse%2C%22cafeType%22%3A%22all%22%7D" style="height:700px"></iframe>
-				
+				<div class="col-lg-3">
+					<div class="panel panel-green">
+                        <div class="panel-heading text-center">
+                           		<p>스노우 보드 강좌(휘스토리) - 초급 5. 너비스 턴(Novice Turn)</p>
+                           		 </div>
+                        <div class="panel-body text-center">
+                        	<iframe src="https://www.youtube.com/embed/xGIr9TayBSA" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+					<div class="panel panel-yellow">
+                        <div class="panel-heading text-center">
+                           		<p>스노우 보드 강좌(휘스토리) - 중급 1. 중급자 턴(Intermidiate sliding turn)</p>
+                           		 </div>
+                        <div class="panel-body text-center">
+                        	<iframe src="https://www.youtube.com/embed/rSPo0-dXOBk" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+					<div class="panel panel-yellow">
+                        <div class="panel-heading text-center">
+                           		<p>스노우 보드 강좌(휘스토리) - 중급 2. 상급자 턴(Advenced Sliding Turn)</p>
+                           		 </div>
+                        <div class="panel-body text-center">
+                        	<iframe src="https://www.youtube.com/embed/ts46lGn0LMM" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+					<div class="panel panel-red">
+                        <div class="panel-heading text-center">
+                           		<p>스노우 보드 강좌(휘스토리) - 상급 1. 베이직 카빙턴(Basic Carved turn)</p>
+                           		 </div>
+                        <div class="panel-body text-center">
+                        	<iframe src="https://www.youtube.com/embed/IumrMDKWuHw" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+			</div>
+			<div class="row">
+				<div class="col-lg-3">
+					<div class="panel panel-red">
+                        <div class="panel-heading text-center">
+                           		<p>스노우 보드 강좌(휘스토리) - 상급 2. 어드밴스드 카빙 턴(Advenced Carving Turn)</p>
+                           		 </div>
+                        <div class="panel-body text-center">
+                        	<iframe src="https://www.youtube.com/embed/-12zOL-HHrU" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
 			</div>
 		</div>
 		 

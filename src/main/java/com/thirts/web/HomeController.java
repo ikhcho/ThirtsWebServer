@@ -180,12 +180,44 @@ public class HomeController {
 			return mv;
 		}
 		
+		
 		@RequestMapping(value = "/m_rank", method = RequestMethod.GET)
-		public ModelAndView m_rank(LoginVo vo) {
+		public ModelAndView m_rank(@RequestParam(value = "location") String location,@RequestParam(value = "type", required = false, defaultValue = "max") String type) {
+			ModelAndView mv = new ModelAndView();
+			List<RankVo> LRVM = rService.searchRank_m("THIRTS 리조트");
+			List<RankVo> LRVA = rService.searchRank_a("THIRTS 리조트");
+			List<RankVo> LRVS = rService.searchRank_s("THIRTS 리조트");
+			mv.addObject("lrvm",LRVM);
+			mv.addObject("lrva",LRVA);
+			mv.addObject("lrvs",LRVS);
+			mv.setViewName("main/android/m_rank");
+			return mv;
+			
+		}
+		@RequestMapping(value = "/m_community", method = RequestMethod.GET)
+		public ModelAndView m_community(Model model) {
+			ModelAndView mv = new ModelAndView();
+			mv.setViewName("main/android/m_community");
+			return mv;
+		}
+		@RequestMapping(value = "/m_device", method = RequestMethod.POST)
+		public ModelAndView m_device(LoginVo vo) {
 		
 			ModelAndView mv = new ModelAndView();
-			
-			mv.setViewName("main/android/m_rank");
+
+			lService.SaveDevice(vo);
+			mv.addObject("vo", vo);
+			mv.setViewName("main/android/m_device");
+			return mv;
+		}
+		
+		@RequestMapping(value = "/m_device", method = RequestMethod.GET)
+		public ModelAndView get_m_device(LoginVo vo) {
+		
+			ModelAndView mv = new ModelAndView();
+			mv.addObject("vo", vo);
+
+			mv.setViewName("main/android/m_device");
 			return mv;
 			
 		}
@@ -303,6 +335,27 @@ public class HomeController {
 			return mv;
 			
 		}
+		
+		@RequestMapping(value = "/ski", method = RequestMethod.POST)
+		public ModelAndView ski(LoginVo vo) {
+		
+			ModelAndView mv = new ModelAndView();
+			
+			mv.setViewName("main/web/ski");
+			return mv;
+			
+		}
+		
+		@RequestMapping(value = "/board", method = RequestMethod.POST)
+		public ModelAndView board(LoginVo vo) {
+		
+			ModelAndView mv = new ModelAndView();
+			
+			mv.setViewName("main/web/board");
+			return mv;
+			
+		}
+		
 		@RequestMapping(value = "/profile", method = RequestMethod.POST)
 		public ModelAndView profile(LoginVo vo) {
 

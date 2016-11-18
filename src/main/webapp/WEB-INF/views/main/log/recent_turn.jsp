@@ -165,6 +165,16 @@
 		form.action = "community";
 		form.submit();
 	}
+	function ski() {
+		var form = document.f;
+		form.action = "ski";
+		form.submit();
+	}
+	function board() {
+		var form = document.f;
+		form.action = "board";
+		form.submit();
+	}
 </script>
 
 <script src="//www.google.com/jsapi"></script>
@@ -326,6 +336,10 @@ function drawChart() {
 									class="fa fa-trophy fa-fw"></i> 전체랭킹</a></li>
 							<li><a class="btn" onclick="community()"><i
 									class="fa fa-group fa-fw"></i> 커뮤니티</a></li>
+							<li><a class="btn" onclick="ski()"><i
+									class="fa fa-pied-piper-alt fa-fw"></i> 스키장정보</a></li>
+							<li><a class="btn" onclick="board()"><i
+									class="fa fa-youtube-play fa-fw"></i> 보드교육</a></li>
 							<li><a class="btn" href="login"><i
 									class="fa fa-user fa-fw"></i>
 									<%

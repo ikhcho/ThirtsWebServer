@@ -96,6 +96,16 @@
 		form.action = "community";
 		form.submit();
 	}
+	function ski() {
+		var form = document.f;
+		form.action = "ski";
+		form.submit();
+	}
+	function board() {
+		var form = document.f;
+		form.action = "board";
+		form.submit();
+	}
 </script>
   
 </head>
@@ -169,6 +179,10 @@
 									class="fa fa-trophy fa-fw"></i> 전체랭킹</a></li>
 							<li><a class="btn" onclick="community()"><i
 									class="fa fa-group fa-fw"></i> 커뮤니티</a></li>
+							<li><a class="btn" onclick="ski()"><i
+									class="fa fa-pied-piper-alt fa-fw"></i> 스키장정보</a></li>
+							<li><a class="btn" onclick="board()"><i
+									class="fa fa-youtube-play fa-fw"></i> 보드교육</a></li>
 							<li><a class="btn" href="login"><i
 									class="fa fa-user fa-fw"></i>
 									<%
@@ -269,7 +283,7 @@
 									 
                                 </div>
                                 <div class="tab-pane fade" id="pendulum">
-                                    <h4>Pendulum Mode란?
+                                    <h4>Pendulum Mode란?<a href="https://www.youtube.com/watch?v=WqeN1AqJPrw"><i class="fa fa-youtube-play fa-fw"></i></a>
                                     </h4>
                                     <ul>
                                     	<li><p>보드의 기본 동작인 Pendulum 동작을 위한 교육용 모드입니다.</p></li>
@@ -285,7 +299,7 @@
 									</ul>  
                                 </div>
                                 <div class="tab-pane fade" id="turn">
-                                	<h4>Turn Mode란?
+                                	<h4>Turn Mode란?<a href="https://www.youtube.com/watch?v=1XNgmFHouyM"><i class="fa fa-youtube-play fa-fw"></i></a>
                                     </h4>
                                     <ul>
                                     	<li><p>보드의 고급 동작인 Turn 동작을 위한 교육용 모드입니다.</p></li>
